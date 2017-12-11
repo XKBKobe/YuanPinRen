@@ -1,0 +1,8 @@
+platform :ios, '8.0'
+
+def pods
+	pod 'AFNetworking'
+end
+target ‘YuanPinRen’ do
+	pods
+end

@@ -1,0 +1,24 @@
+//
+//  PrefixHeader.pch
+//  YuanPinRen
+//
+//  Created by cracker on 2017/6/2.
+//  Copyright © 2017年 Facebook. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <AlipaySDK/AlipaySDK.h>
+
+#import <React/RCTBundleURLProvider.h>
+#import <React/RCTRootView.h>
+#import <React/RCTBridge.h>
+#import <React/RCTEventDispatcher.h>
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
