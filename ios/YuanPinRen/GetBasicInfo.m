@@ -140,7 +140,7 @@ RCT_REMAP_METHOD(getNativeCookie, resolve:(RCTPromiseResolveBlock)resolve
   }
 }
 
-RCT_REMAP_METHOD(getPhotoAuthorizate, resolve:(RCTPromiseResolveBlock)resolve
+RCT_REMAP_METHOD(getPhotoAuthorizate,resolve:(RCTPromiseResolveBlock)resolve
                  result:(RCTPromiseRejectBlock)reject)
 {
     ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
