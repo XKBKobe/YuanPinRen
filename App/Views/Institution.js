@@ -7,7 +7,7 @@ import {
     NativeModules,
     Dimensions,
     TouchableWithoutFeedback,
-    TouchableOpacity
+    TouchableOpacity, Alert
 } from 'react-native';
 import BaseComponent from '../Components/BaseComponent';
 import { Actions, ActionConst } from 'react-native-router-flux';
@@ -39,12 +39,19 @@ export default class Institution extends BaseComponent {
     }
 
     async componentWillMount() {
+        //检测版本
         let appVersion = await GetBasicInfo.getAppVersion();
         let self = this;
         requestData('/index/other/update_version', 'POST', 'version='+appVersion)
         .then((data) => {
+
+            Alert.alert("提示", '当前版本无法使用，请下载最新版本！', [
+                {text: 'OK', onPress: () => GetBasicInfo.openAppStore('https://itunes.apple.com/cn/app/%E6%BA%90%E5%93%81%E4%BA%BA/id1239681699?mt=8')},
+            ]);
+            console.log('update_version request '+JSON.stringify(data));
             if (data.data.version == 2) {
-                self.setState({isUseful: false, appUrl: data.data.url});
+                //todo
+                self.setState({isUseful: true, appUrl: data.data.url});
             }
         }, (error) => {
 
@@ -277,15 +284,20 @@ export default class Institution extends BaseComponent {
     }
 
     render() {
-        // if(!this.state.isUseful) {
-        //     let self = this;  
-        //     return <View style={{flex: 1, flexDirection: 'column',alignItems: 'center',
-        //     justifyContent: 'center'}}>
-        //         <TouchableOpacity onPress={() => GetBasicInfo.openAppStore(self.state.appUrl)}>
-        //             <Text>当前版本无法使用，请下载最新版本！</Text>
-        //         </TouchableOpacity>
-        //     </View>
-        // }
+        if(!this.state.isUseful) {
+
+            /**
+            let self = this;
+            return <View style={{flex: 1, flexDirection: 'column',alignItems: 'center',
+            justifyContent: 'center'}}>
+                <TouchableOpacity onPress={() => GetBasicInfo.openAppStore(self.state.appUrl)}>
+                    <Text>当前版本无法使用，请下载最新版本！</Text>
+                </TouchableOpacity>
+            </View>
+            **/
+
+
+        }
        return (
             <View>
                 {this.headerRender()}
