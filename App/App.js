@@ -75,7 +75,6 @@ export default class App extends Component {
         //         GetBasicInfo.setNativeCookie(data.data.JSSIONID);
         //     }
         // }, (error) => {
-
         // });
     }
 
