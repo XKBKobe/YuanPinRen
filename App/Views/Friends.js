@@ -87,7 +87,7 @@ export default class Friends extends BaseComponent {
                     </View>
                     <View style = {{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
                         <Text style = {{fontSize: 10, color: '#666666'}}>
-                            累计奖励：
+                            累计推荐奖：
                         </Text>
                         <Text style = {{fontSize: 10, color: '#ffa700'}}>
                             {itemData.sum}
