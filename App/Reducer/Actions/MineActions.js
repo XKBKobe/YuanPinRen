@@ -6,7 +6,7 @@ export function getUserInfo() {
         requestData('/index/User/index', "POST")
         .then((data) => {
             if (0 == data.errno) {
-                console.log(" ------------ ", data);
+                console.log(" ------------  /index/User/index", data);
                 dispatch(dispatchUserInfo(data.data))
             }else {
                 alert(data.errmsg);

@@ -15,6 +15,7 @@ export default function withdrawReducer(state = WithdrawInfoState, action) {
                 bankName: action.withdrawInfo.bankName,
                 bankLastNumber: action.withdrawInfo.bankLastNumber,
                 haveMoney: action.withdrawInfo.haveMoney,
+                bankCardNo:action.withdrawInfo.bankCardNo
             });
         case ActionsType.WITHDRAW_CONFIRM:
             return Object.assign({}, state, {

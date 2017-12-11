@@ -34,6 +34,8 @@ class WithdrawMoney extends BaseComponent {
     componentWillMount() {
         this.props.WithdrawActions.getWithdrawInfo();
         this.setState({pageStatus: "HASDATA"})
+
+        console.log('WithdrawState  '+JSON.stringify(this.props.WithdrawState));
     }
 
     headerRender() {
@@ -77,7 +79,7 @@ class WithdrawMoney extends BaseComponent {
                                     {this.props.WithdrawState.bankName}
                                 </Text>
                                 <Text style={{fontSize:10,color:"#999",marginTop:3}}>
-                                    银行卡号{this.props.WithdrawState.bankCardNo}
+                                    银行卡号 {this.props.WithdrawState.bankCardNo}
                                 </Text>
                             </View>
                         </View>

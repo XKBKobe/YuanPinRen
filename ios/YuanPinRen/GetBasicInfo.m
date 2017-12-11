@@ -176,9 +176,8 @@ RCT_EXPORT_METHOD(deleteNativeCookie) {
 
 RCT_EXPORT_METHOD(setNativeCookie:(NSString *)cookie)
 {
-   NSLog(@"%@ -------- set",cookie);
+
   [[AutoLocationData sharedInstance] setNativeCookie:cookie];
-   NSLog(@"%@ -------- set 11111",cookie);
 }
 
 RCT_EXPORT_METHOD(setLoginStatus:(NSString *)loginStatus)
