@@ -179,20 +179,30 @@ class SelfInformation extends BaseComponent {
                     <ClickScope
                         style={styles.logoutView}
                         onPress={() => {
-                            requestData('/index/User/logout', "POST", "")
-                                .then((data) => {
-                                    alert(data.data);
-                                    if (0 == data.errno) {
-                                        GetBasicInfo.setLoginStatus("false");
-                                        this.props.MineActions.clearUserInfo();
-                                        Actions.tabbar({type: ActionConst.RESET});
-                                        //Actions.WelcomeLogin({type: ActionConst.REPLACE});
-                                    } else {
-                                        alert(data.errmsg);
+                            Alert.alert("提示", '确认退出当前帐号',
+                                [{
+                                    text: 'cancel', onPress: () => {
                                     }
-                                }, (error) => {
+                                },
+                                    {
+                                        text: 'ok', onPress: () => {
+                                            requestData('/index/User/logout', "POST", "")
+                                                .then((data) => {
+                                                    alert(data.data);
+                                                    if (0 == data.errno) {
+                                                        GetBasicInfo.setLoginStatus("false");
+                                                        this.props.MineActions.clearUserInfo();
+                                                        Actions.tabbar({type: ActionConst.RESET});
+                                                        //Actions.WelcomeLogin({type: ActionConst.REPLACE});
+                                                    } else {
+                                                        alert(data.errmsg);
+                                                    }
+                                                }, (error) => {
 
-                                });
+                                                });
+                                        }
+                                    },
+                                ]);
                         }}
                     >
                         <Text style={{fontSize: 14, color: '#333333'}}>

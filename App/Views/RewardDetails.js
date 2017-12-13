@@ -105,7 +105,6 @@ export default class RewardDetails extends BaseComponent {
     goodsListRender(goodsListData) {
         if (!goodsListData || goodsListData.length < 1) {return;}
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
         return (
             <View>
                 <ListView
@@ -120,8 +119,8 @@ export default class RewardDetails extends BaseComponent {
         return rebateInfo.map(function(itemData, index){
             let title = rebateType[itemData.rebateType];
             return (
-                <View key={index}>
-                    <Text style={{color:"#ffa700",fontSize:12}}>{title} ￥{itemData.rebateMoney}</Text>
+                <View key={index} style={{flex:1}}>
+                    <Text style={{color:"#ffa700",fontSize:12,marginRight:10,textAlign:'right'}}>{title} ￥{itemData.rebateMoney}</Text>
                 </View>
             )
         });
@@ -139,10 +138,10 @@ export default class RewardDetails extends BaseComponent {
 
                 {this.goodsListRender(itemData.goodList)}
 
-                <View style={{width:Dimensions.get('window').width,height:35,marginTop: -12,backgroundColor:"#fff"}}>
-                    <View style={{marginTop:10,justifyContent:"flex-end",alignItems:"center",flexDirection:"row"}}>
+                <View style={{width:Dimensions.get('window').width,height:45,marginTop: -12,backgroundColor:"#fff"}}>
+                    <View style={{marginTop:12,flexDirection:"row",flex:1}}>
+                        <Text style={{color:"#ff6700",fontSize:12,marginLeft:10,flex:2,fontWeight:'bold'}}>购买者：{itemData.nickname}</Text>
                         {this.renderRewardItem(itemData.rebateInfo)}
-                        <View style={{width:15}}></View>
                     </View>
                 </View>
                 <View style={{height:1,width:Dimensions.get('window').width,backgroundColor:"#eee"}}></View>
