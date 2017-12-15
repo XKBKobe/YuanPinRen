@@ -32,7 +32,7 @@ export default async function request(api, method, data = "") {
                 },
                 body: data
             }).then((response) => response.json()).then((data) => {//1
-                console.log('POST请求的返回成功数据  ' + api + '   ' + JSON.stringify(data));
+                console.log('POST请求的返回成功数据  ' + api + '   ' +JSON.stringify(data));
                 //登录失效
                 if('100115' == data.errno) {
                     GetBasicInfo.setLoginStatus("false");
@@ -57,8 +57,7 @@ export default async function request(api, method, data = "") {
                     "accept-language": 'zh-CN,zh;q=0.8'
                 }
             }).then((response) => {//1
-                console.log('GET请求的返回成功数据  ' + api + '   ' + JSON.stringify(JSON.parse(response._bodyText)));
-                resolve(JSON.parse(response._bodyText));
+                resolve(response);
             }).catch((error) => {
                 console.log('GET请求的返回失败数据  ' + api + '   ' + error);
                 reject(error);

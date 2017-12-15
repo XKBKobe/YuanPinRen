@@ -33,6 +33,16 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#dddddd'
     },
+    drawRecordButton: {
+        height: 28,
+        width: 72,
+        backgroundColor: '#ff6700',
+        borderRadius: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft:10
+    },
+
     drawButton: {
         height: 28,
         width: 72,

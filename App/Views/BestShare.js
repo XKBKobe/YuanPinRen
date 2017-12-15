@@ -19,6 +19,7 @@ import BaseComponent from '../Components/BaseComponent';
 import ClickScope from '../Components/ClickScope';
 import requestData from '../NetWork/request';
 
+
 const GetBasicInfo = NativeModules.GetBasicInfo;
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
@@ -32,7 +33,9 @@ export default class BestShare extends BaseComponent {
             whichItemChoosed: 1,
             goodsListData: [],
             isUseful: true,
-            appUrl: ""
+            appUrl: "",
+            isShouSerchModule: true,
+            hideserch: false,
         };
 
         this.iosStatusBarRender = this.iosStatusBarRender.bind(this);
@@ -113,11 +116,20 @@ export default class BestShare extends BaseComponent {
         return (
             <View>
                 {this.iosStatusBarRender()}
-                <View style = {styles.titleView}>
-                    <Text style = {{fontSize: 17, color: '#333333'}}>
+                <View style={{flexDirection: 'row',height: 44}}>
+                    <Text style={{fontSize: 17, color: '#333333', flex: 1}}>
+
+                    </Text>
+                    <Text style={{fontSize: 17, color: '#333333', flex: 1, textAlign: 'center',lineHeight:44}}>
                         源品分享
                     </Text>
+                    <Text style={styles.tabSelect} onPress={() => {
+                        this.setState({isShouSerchModule: !this.state.isShouSerchModule, hideserch: true});
+                        console.log('isShouSerchModule')
+                    }}>筛选
+                    </Text>
                 </View>
+
                 <View style = {styles.tabView}>
                     <ClickScope
                         style = {[styles.commonTabItem,{borderBottomWidth: 2, borderBottomColor: tab1Color}]}
@@ -157,7 +169,6 @@ export default class BestShare extends BaseComponent {
     }
 
     goodsItemRender(itemData, index) {
-        console.log
         if(!itemData.appShowImg) {return <View></View>;}
         return (
             <ClickScope
@@ -252,4 +263,12 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#f0f0f0'
     },
+    tabSelect: {
+        fontSize: 14,
+        color: '#333333',
+        flex: 1, textAlign: 'right',
+        paddingTop: 2,
+        paddingRight: 10,
+        lineHeight:44
+    }
 });

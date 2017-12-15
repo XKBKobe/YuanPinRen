@@ -194,6 +194,13 @@ class Mine extends Component {
                                 ￥{this.props.MineState.canUseMoney}
                             </Text>
                         </View>
+                        <ClickScope onPress={() => {Actions.DrawRecord()}}
+                                    style = {styles.drawRecordButton}
+                        >
+                            <Text style = {styles.textStyle5}>
+                                提现记录
+                            </Text>
+                        </ClickScope>
 
                         <ClickScope onPress={() => {this.withdrawMoneyBefore()}}
                             style = {styles.drawButton}

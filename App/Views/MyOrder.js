@@ -16,7 +16,7 @@ import Header from '../Components/Header';
 import * as Request from '../NetWork/nativeDataRequest';
 import {formatDate} from '../Utils/toolFunctions';
 import OrderDetail from './OrderDetail';
-import { Actions, ActionConst } from 'react-native-router-flux';
+import {Actions, ActionConst} from 'react-native-router-flux';
 import requestData from '../NetWork/request';
 
 const GetBasicInfo = NativeModules.GetBasicInfo;
@@ -57,35 +57,37 @@ export default class MyOrder extends BaseComponent {
     componentWillMount() {
         let param = "";
         if (this.props.handleId != 1) {
-            param = "type="+(this.props.handleId-1);
+            param = "type=" + (this.props.handleId - 1);
         }
         this.queryOrdersData(param);
     }
 
     queryOrdersData(type, page) {
-        if (!page) {page = 1}
-        requestData('/index/Order/order_list', "POST", type+"&page="+page+"&pageSize=10")
-        .then((data) => {
-            if (0 == data.errno) {
-                //console.log(" ********* ", data);
-                if (0 == data.data.total) {
-                    this.setState({pageStatus:"NODATA",isLoadingMore: false});
-                    return;
+        if (!page) {
+            page = 1
+        }
+        requestData('/index/Order/order_list', "POST", type + "&page=" + page + "&pageSize=10")
+            .then((data) => {
+                if (0 == data.errno) {
+                    //console.log(" ********* ", data);
+                    if (0 == data.data.total) {
+                        this.setState({pageStatus: "NODATA", isLoadingMore: false});
+                        return;
+                    }
+                    this.setState({
+                        pageStatus: 'HASDATA',
+                        isLoadingMore: false,
+                        listData: data.data.data,
+                        totalPage: parseInt(data.data.total) / 10 < 1 ? 1 : Math.ceil(parseInt(data.data.total) / 10),
+                        currentPage: data.data.current_page
+                    });
+                } else {
+                    alert(data.errmsg);
+                    this.setState({pageStatus: "NODATA", isLoadingMore: false});
                 }
-                this.setState({
-                    pageStatus: 'HASDATA',
-                    isLoadingMore: false,
-                    listData: data.data.data,
-                    totalPage: parseInt(data.data.total)/10 < 1 ? 1 : Math.ceil(parseInt(data.data.total)/10),
-                    currentPage: data.data.current_page
-                });
-            }else {
-                alert(data.errmsg);
-                this.setState({pageStatus:"NODATA",isLoadingMore: false});
-            }
-        }, (error) => {
+            }, (error) => {
 
-        });
+            });
     }
 
     gotoOrderDetailPage(orderId) {
@@ -94,7 +96,7 @@ export default class MyOrder extends BaseComponent {
 
     order1Click() {
         if (1 == this.state.orderStatus) {
-            return ;
+            return;
         }
         this.queryOrdersData("");
         this.setState({
@@ -105,7 +107,7 @@ export default class MyOrder extends BaseComponent {
 
     order2Click() {
         if (2 == this.state.orderStatus) {
-            return ;
+            return;
         }
 
         this.queryOrdersData("type=1");
@@ -117,7 +119,7 @@ export default class MyOrder extends BaseComponent {
 
     order3Click() {
         if (3 == this.state.orderStatus) {
-            return ;
+            return;
         }
         this.queryOrdersData("type=2");
         this.setState({
@@ -128,7 +130,7 @@ export default class MyOrder extends BaseComponent {
 
     order4Click() {
         if (4 == this.state.orderStatus) {
-            return ;
+            return;
         }
         this.queryOrdersData("type=3");
         this.setState({
@@ -139,7 +141,7 @@ export default class MyOrder extends BaseComponent {
 
     order5Click() {
         if (5 == this.state.orderStatus) {
-            return ;
+            return;
         }
         this.queryOrdersData("type=4");
         this.setState({
@@ -163,149 +165,154 @@ export default class MyOrder extends BaseComponent {
         if (1 == this.state.orderStatus) {
             coupon1Style = styles.tabItemChoosedView;
             coupon1TextStyle = styles.tabItemChoosedText;
-        }else if (2 == this.state.orderStatus) {
+        } else if (2 == this.state.orderStatus) {
             coupon2Style = styles.tabItemChoosedView;
             coupon2TextStyle = styles.tabItemChoosedText;
-        }else if (3 == this.state.orderStatus) {
+        } else if (3 == this.state.orderStatus) {
             coupon3Style = styles.tabItemChoosedView;
             coupon3TextStyle = styles.tabItemChoosedText;
-        }else if (4 == this.state.orderStatus) {
+        } else if (4 == this.state.orderStatus) {
             coupon4Style = styles.tabItemChoosedView;
             coupon4TextStyle = styles.tabItemChoosedText;
-        }else if (5 == this.state.orderStatus) {
+        } else if (5 == this.state.orderStatus) {
             coupon5Style = styles.tabItemChoosedView;
             coupon5TextStyle = styles.tabItemChoosedText;
         }
 
 
         return (
-            <View style = {styles.tabBarView}>
+            <View style={styles.tabBarView}>
                 <ClickScope
-                    onPress = {this.order1Click}
-                    style = {coupon1Style}
+                    onPress={this.order1Click}
+                    style={coupon1Style}
                 >
-                    <Text style = {coupon1TextStyle}>全部</Text>
+                    <Text style={coupon1TextStyle}>全部</Text>
                 </ClickScope>
 
                 <ClickScope
-                    onPress = {this.order2Click}
-                    style = {coupon2Style}
+                    onPress={this.order2Click}
+                    style={coupon2Style}
                 >
-                    <Text style = {coupon2TextStyle}>待付款</Text>
+                    <Text style={coupon2TextStyle}>待付款</Text>
                 </ClickScope>
 
                 <ClickScope
-                    onPress = {this.order3Click}
-                    style = {coupon3Style}
+                    onPress={this.order3Click}
+                    style={coupon3Style}
                 >
-                    <Text style = {coupon3TextStyle}>待发货</Text>
+                    <Text style={coupon3TextStyle}>待发货</Text>
                 </ClickScope>
 
                 <ClickScope
-                    onPress = {this.order4Click}
-                    style = {coupon4Style}
+                    onPress={this.order4Click}
+                    style={coupon4Style}
                 >
-                    <Text style = {coupon4TextStyle}>待收货</Text>
+                    <Text style={coupon4TextStyle}>待收货</Text>
                 </ClickScope>
 
                 <ClickScope
-                    onPress = {this.order5Click}
-                    style = {coupon5Style}
+                    onPress={this.order5Click}
+                    style={coupon5Style}
                 >
-                    <Text style = {coupon5TextStyle}>已收货</Text>
+                    <Text style={coupon5TextStyle}>已收货</Text>
                 </ClickScope>
             </View>
         );
     }
 
-     gotoPay(orderSn) {
+    gotoPay(orderSn) {
         requestData('/index/Alipay/alipay', 'POST', 'orderSn=' + orderSn)
-        .then((data) => {
-            GetBasicInfo.payForOrder(data.data);
-        });
+            .then((data) => {
+                GetBasicInfo.payForOrder(data.data);
+            });
     }
 
-    cancelOrder(orderSn,type) {
+    cancelOrder(orderSn, type) {
         let self = this;
-        requestData('/index/Order/operation_order', "POST", "type="+type+"&orderSn="+orderSn)
-        .then((data) => {
-            if (0 == data.errno) {
-                let stype = "";
-                if (self.state.orderStatus > 1) {stype="type="+(self.state.orderStatus-1)}
-                 self.queryOrdersData(stype);
-                if (type == 2) {
-                    Alert.alert("成功确认收货! "); 
-                }else if(type == 3) {
-                    Alert.alert("成功删除订单! "); 
-                }else {
-                    Alert.alert("成功取消订单! "); 
+        requestData('/index/Order/operation_order', "POST", "type=" + type + "&orderSn=" + orderSn)
+            .then((data) => {
+                if (0 == data.errno) {
+                    let stype = "";
+                    if (self.state.orderStatus > 1) {
+                        stype = "type=" + (self.state.orderStatus - 1)
+                    }
+                    self.queryOrdersData(stype);
+                    if (type == 2) {
+                        Alert.alert("成功确认收货! ");
+                    } else if (type == 3) {
+                        Alert.alert("成功删除订单! ");
+                    } else {
+                        Alert.alert("成功取消订单! ");
+                    }
+                } else {
+                    alert(data.errmsg);
                 }
-            }else {
-                alert(data.errmsg);
-            }
-        }, (error) => {
+            }, (error) => {
 
-        });
+            });
     }
 
     pageNoDataRender() {
         return (
-            <View style = {styles.contentView}>
+            <View style={styles.contentView}>
                 <Text>您还没有订单!</Text>
             </View>
         );
     }
 
-    orderItemBottomRender(param, orderSn,shipNo,shipMethod) {
+    orderItemBottomRender(param, orderSn, shipNo, shipMethod, shipId) {
         if ('待付款' == param) {
             return (
-                <View style = {styles.orderItemBottomView}>
-                    <ClickScope onPress={() => this.cancelOrder(orderSn,1)}
-                        style = {[styles.button1, {marginRight: 15}]}
+                <View style={styles.orderItemBottomView}>
+                    <ClickScope onPress={() => this.cancelOrder(orderSn, 1)}
+                                style={[styles.button1, {marginRight: 15}]}
                     >
-                        <Text style = {styles.textStyle1}>取消订单</Text>
+                        <Text style={styles.textStyle1}>取消订单</Text>
                     </ClickScope>
                     <ClickScope
-                        onPress = {() => this.gotoPay(orderSn)}
-                        style = {styles.button2}
+                        onPress={() => this.gotoPay(orderSn)}
+                        style={styles.button2}
                     >
-                        <Text style = {styles.textStyle4}>立即付款</Text>
+                        <Text style={styles.textStyle4}>立即付款</Text>
                     </ClickScope>
                 </View>
             );
         } else if ('已取消' == param) {
             return (
-                <View style = {styles.orderItemBottomView}>
-                    <ClickScope onPress={() => this.cancelOrder(orderSn,3)}
-                        style = {styles.button1}
+                <View style={styles.orderItemBottomView}>
+                    <ClickScope onPress={() => this.cancelOrder(orderSn, 3)}
+                                style={styles.button1}
                     >
-                        <Text style = {styles.textStyle1}>删除订单</Text>
+                        <Text style={styles.textStyle1}>删除订单</Text>
                     </ClickScope>
                 </View>
             );
         } else if ('已发货' == param) {
             return (
-                <View style = {styles.orderItemBottomView}>
+                <View style={styles.orderItemBottomView}>
                     <ClickScope
-                        onPress={() => Alert.alert("物流公司："+shipMethod+"\n快递单号："+shipNo)}
-                        style = {[styles.button1, {marginRight: 15}]}
+                        onPress={() => {
+
+                            Actions.LogisticsDetail({shipNo: shipNo, shipId: shipId});}
+                        }
+                        style={[styles.button1, {marginRight: 15}]}
                     >
-                        <Text style = {styles.textStyle1}>查看物流</Text>
+                        <Text style={styles.textStyle1}>查看物流</Text>
                     </ClickScope>
-                    <ClickScope onPress={() => this.cancelOrder(orderSn,2)}
-                        style = {styles.button2}
+                    <ClickScope onPress={() => this.cancelOrder(orderSn, 2)}
+                                style={styles.button2}
                     >
-                        <Text style = {styles.textStyle4}>确认收货</Text>
+                        <Text style={styles.textStyle4}>确认收货</Text>
                     </ClickScope>
                 </View>
             );
         } else if ('清关中' == param) {
             return (
-                <View style = {styles.orderItemBottomView}>
+                <View style={styles.orderItemBottomView}>
                     <ClickScope
-                        style = {styles.button2}
+                        style={styles.button2}
                     >
-                        <Text style = {styles.textStyle4}>提醒发货</Text>
+                        <Text style={styles.textStyle4}>提醒发货</Text>
                     </ClickScope>
                 </View>
             );
@@ -313,31 +320,33 @@ export default class MyOrder extends BaseComponent {
     }
 
     goodsItemRender(itemData) {
-        if (!itemData.imgobj){return <View></View>}
+        if (!itemData.imgobj) {
+            return <View></View>
+        }
         let imgUrl = "";
         if ((itemData.imgobj instanceof Array)) {
             imgUrl = itemData.imgobj[0].url;
-        }else {
+        } else {
             imgUrl = itemData.imgobj.url;
         }
         return (
-            <View style = {styles.goodsItemView}>
+            <View style={styles.goodsItemView}>
                 <Image
-                    style = {{height: 60, width: 60, borderWidth: 1, borderColor: '#dddddd'}}
-                    source = {{uri: imgUrl}}
+                    style={{height: 60, width: 60, borderWidth: 1, borderColor: '#dddddd'}}
+                    source={{uri: imgUrl}}
                 />
 
-                <View style = {styles.goodsNameView}>
-                    <Text style = {styles.textStyle1}>
+                <View style={styles.goodsNameView}>
+                    <Text style={styles.textStyle1}>
                         {itemData.goodsName}
                     </Text>
                 </View>
 
-                <View style = {{flex: 1, flexDirection: 'column', alignItems: 'flex-end'}}>
-                    <Text style = {styles.textStyle1}>
+                <View style={{flex: 1, flexDirection: 'column', alignItems: 'flex-end'}}>
+                    <Text style={styles.textStyle1}>
                         ¥{itemData.goodsSalePrice}
                     </Text>
-                    <Text style = {styles.textStyle1}>
+                    <Text style={styles.textStyle1}>
                         x{itemData.num}
                     </Text>
                 </View>
@@ -347,14 +356,16 @@ export default class MyOrder extends BaseComponent {
     }
 
     goodsListRender(goodsListData) {
-        if (!goodsListData || goodsListData.length < 1) {return;}
+        if (!goodsListData || goodsListData.length < 1) {
+            return;
+        }
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         return (
             <View>
                 <ListView
-                    dataSource = {ds.cloneWithRows(goodsListData)}
-                    renderRow = {this.goodsItemRender}
+                    dataSource={ds.cloneWithRows(goodsListData)}
+                    renderRow={this.goodsItemRender}
                 />
             </View>
         );
@@ -363,38 +374,40 @@ export default class MyOrder extends BaseComponent {
     orderItemRender(itemData) {
         return (
             <ClickScope
-                style = {styles.orderItemView}
-                onPress = {() => this.gotoOrderDetailPage(itemData.orderSn)}
+                style={styles.orderItemView}
+                onPress={() => this.gotoOrderDetailPage(itemData.orderSn)}
             >
-                <View style = {styles.orderItemTitleView}>
-                    <Text style = {styles.textStyle1}>{formatDate(itemData.orderTime * 1000)}</Text>
-                    <Text style = {styles.textStyle2}>{itemData.orderStatus}</Text>
+                <View style={styles.orderItemTitleView}>
+                    <Text style={styles.textStyle1}>{formatDate(itemData.orderTime * 1000)}</Text>
+                    <Text style={styles.textStyle2}>{itemData.orderStatus}</Text>
                 </View>
 
                 {this.goodsListRender(itemData.goodsList)}
 
-                <View style = {styles.orderItemPriceView}>
-                    <Text style = {styles.textStyle1}>
-                        共{itemData.goodsNum}件商品  应付总额：
+                <View style={styles.orderItemPriceView}>
+                    <Text style={styles.textStyle1}>
+                        共{itemData.goodsNum}件商品 应付总额：
                     </Text>
-                    <Text style = {styles.textStyle3}>
+                    <Text style={styles.textStyle3}>
                         ¥{itemData.orderCost}
                     </Text>
                 </View>
-                {this.orderItemBottomRender(itemData.orderStatus,itemData.orderSn, itemData.shipNo,itemData.shipMethod)}
+                {this.orderItemBottomRender(itemData.orderStatus, itemData.orderSn, itemData.shipNo, itemData.shipMethod, itemData.shipId)}
             </ClickScope>
         );
     }
 
     orderListRender() {
-        if (!this.state.listData || this.state.listData.length < 1) {return;}
+        if (!this.state.listData || this.state.listData.length < 1) {
+            return;
+        }
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
         return (
             <View>
                 <ListView
-                    dataSource = {ds.cloneWithRows(this.state.listData)}
-                    renderRow = {this.orderItemRender}
+                    dataSource={ds.cloneWithRows(this.state.listData)}
+                    renderRow={this.orderItemRender}
                 />
             </View>
         );
@@ -404,8 +417,8 @@ export default class MyOrder extends BaseComponent {
         return (
             <View>
                 <Header
-                    headerTitle = {'我的订单'}
-                    leftOnPress = {() => Actions.pop()}
+                    headerTitle={'我的订单'}
+                    leftOnPress={() => Actions.pop()}
                 />
                 {this.tabBarRender()}
             </View>
@@ -413,29 +426,29 @@ export default class MyOrder extends BaseComponent {
     }
 
     LoadMoreData() {
-        console.log("\n\n",this.state.totalPage);
+        console.log("\n\n", this.state.totalPage);
         if (this.state.totalPage == this.state.currentPage || this.state.isLoadingMore) {
-            return ;
+            return;
         }
 
         this.setState({
             isLoadingMore: true
         });
 
-        let type = this.state.orderStatus == 1 ? "" : "type="+(this.state.orderStatus-1);
-        this.queryOrdersData(type, parseInt(this.state.currentPage)+1);
+        let type = this.state.orderStatus == 1 ? "" : "type=" + (this.state.orderStatus - 1);
+        this.queryOrdersData(type, parseInt(this.state.currentPage) + 1);
     }
 
     LoadLessData() {
         if (1 == this.state.currentPage || this.state.isLoadingMore) {
-            return ;
+            return;
         }
 
         this.setState({
             isLoadingMore: true
         });
-        let type = this.state.orderStatus == 1 ? "" : "type="+(this.state.orderStatus-1);
-        this.queryOrdersData(type, parseInt(this.state.currentPage)-1);
+        let type = this.state.orderStatus == 1 ? "" : "type=" + (this.state.orderStatus - 1);
+        this.queryOrdersData(type, parseInt(this.state.currentPage) - 1);
     }
 
 
@@ -450,10 +463,10 @@ export default class MyOrder extends BaseComponent {
         }
 
         return (
-            <ClickScope style = {styles.loadMoreView}
-                onPress={() => this.LoadMoreData()}
+            <ClickScope style={styles.loadMoreView}
+                        onPress={() => this.LoadMoreData()}
             >
-                <Text style = {styles.textStyle3}>
+                <Text style={styles.textStyle3}>
                     {loadingMoreContent}
                 </Text>
             </ClickScope>
@@ -462,9 +475,9 @@ export default class MyOrder extends BaseComponent {
 
     pageHasDataRender() {
         return (
-            <View style = {{flex: 1, backgroundColor: '#f0f0f0'}}>
+            <View style={{flex: 1, backgroundColor: '#f0f0f0'}}>
                 <ScrollView
-                    onScrollEndDrag = {(event) => {
+                    onScrollEndDrag={(event) => {
                         if (event.nativeEvent.contentOffset.y < -1) {
                             //console.log('zhangzhao_content', parseInt(event.nativeEvent.contentSize.height));
                             this.LoadLessData();

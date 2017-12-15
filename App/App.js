@@ -42,21 +42,23 @@ import ProductOrigin from './Views/ProductOrigin';
 import ScienceCenter from './Views/ScienceCenter';
 import ConfirmOrder from './Views/ConfirmOrder';
 import ChooseAddress from './Views/ChooseAddress';
-import UserVerified from './Views/UserVerified'
-import BindBankCard from './Views/BindBankCard'
-import RewardDetails from './Views/RewardDetails'
-import WaitReview from './Views/WaitReview'
-import PaymentSuccess from './Views/PaymentSuccess'
-import ChangeBankCard from './Views/ChangeBankCard'
-import Friends from './Views/Friends'
-import ConfirmCoupon from './Views/ConfirmCoupon'
-import Webview from './Views/Webview'
-import ChangeName from './Views/ChangeName'
-import ChangeMobile from './Views/ChangeMobile'
-import ChangeNick from './Views/ChangeNick'
-import Psychologist from './Views/Psychologist'
+import UserVerified from './Views/UserVerified';
+import BindBankCard from './Views/BindBankCard';
+import RewardDetails from './Views/RewardDetails';
+import WaitReview from './Views/WaitReview';
+import PaymentSuccess from './Views/PaymentSuccess';
+import ChangeBankCard from './Views/ChangeBankCard';
+import Friends from './Views/Friends';
+import ConfirmCoupon from './Views/ConfirmCoupon';
+import Webview from './Views/Webview';
+import ChangeName from './Views/ChangeName';
+import ChangeMobile from './Views/ChangeMobile';
+import ChangeNick from './Views/ChangeNick';
+import Psychologist from './Views/Psychologist';
 import Fuwuxieyi from './Views/Fuwuxieyi';
 import Yinsixieyi from './Views/Yinsixieyi';
+import DrawRecord from './Views/DrawRecord';
+import LogisticsDetail from './Views/LogisticsDetail'
 
 const RouterWithRedux = connect()(Router);
 const GetBasicInfo = NativeModules.GetBasicInfo;
@@ -133,6 +135,8 @@ export default class App extends Component {
                             <Scene key="ChooseAddress" component={ChooseAddress} />
                             <Scene key='Fuwuxieyi' component={Fuwuxieyi}/>
                             <Scene key='Yinsixieyi' component={Yinsixieyi}/>
+                            <Scene key='DrawRecord' component={DrawRecord}/>
+                            <Scene key='LogisticsDetail' component={LogisticsDetail}/>
                         </Scene>
                     </Scene>
                 </RouterWithRedux>

@@ -33,6 +33,11 @@ export default class LoginByPhone extends BaseComponent {
         this.loginHandle = this.loginHandle.bind(this);
     }
 
+    componentWillUnmount(){
+        clearInterval();
+        this.setState({verText: "获取验证码"});
+    }
+
     headerRender() {
         return (
             <Header
