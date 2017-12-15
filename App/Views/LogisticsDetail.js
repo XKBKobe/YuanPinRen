@@ -29,10 +29,12 @@ export default class logisticsDetail extends BaseComponent {
         this.listItemRender = this.listItemRender.bind(this);
         this.timeLine = this.timeLine.bind(this);
         this.radiusSet = this.radiusSet.bind(this);
+        this.status = this.status.bind(this);
+
+
     }
 
     componentWillMount() {
-        console.log('shipNo shipId', this.props.shipNo + '  ' + this.props.shipId);
         //物流详情
         requestData('/index/Order/express_info', "POST", "shipNo=" + this.props.shipNo + "&shipId=" + this.props.shipId).then(data => {
             if(data.data.data && data.data.data.length > 0){
@@ -65,7 +67,7 @@ export default class logisticsDetail extends BaseComponent {
     pageNoDataRender() {
         return (
             <View style={styles.contentView}>
-                <Text>您还没有订单!</Text>
+                <Text>您还没有物流信息！</Text>
             </View>
         );
     }
@@ -86,7 +88,7 @@ export default class logisticsDetail extends BaseComponent {
                             </View>
                             <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
                                 <Text>物流状态：</Text>
-                                <Text style={{color: '#999999'}}>{this.state.data.state}</Text>
+                                {this.status(this.state.data.state)}
                             </View>
                         </View>
                         <Text style={{
@@ -106,6 +108,14 @@ export default class logisticsDetail extends BaseComponent {
             );
 
         }
+    }
+
+
+    status(status){
+       let statusText = status == 3?'已收货':'配送中';
+       return(
+           <Text style={{color: '#999999'}}>{statusText}</Text>
+       )
     }
 
     listRender() {
