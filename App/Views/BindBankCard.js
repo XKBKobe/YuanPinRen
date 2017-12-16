@@ -40,7 +40,6 @@ const bankArray = [
 const GetBasicInfo = NativeModules.GetBasicInfo;
 
 let photoOptions = {
-    //底部弹出框选项
     quality:0.75,
     noData:false,
     storageOptions: {
