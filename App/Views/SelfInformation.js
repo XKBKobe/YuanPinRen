@@ -191,6 +191,7 @@ class SelfInformation extends BaseComponent {
                                                     alert(data.data);
                                                     if (0 == data.errno) {
                                                         GetBasicInfo.setLoginStatus("false");
+                                                        GetBasicInfo.setNativeCookie('');
                                                         this.props.MineActions.clearUserInfo();
                                                         Actions.tabbar({type: ActionConst.RESET});
                                                         //Actions.WelcomeLogin({type: ActionConst.REPLACE});

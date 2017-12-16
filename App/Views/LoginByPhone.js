@@ -25,7 +25,7 @@ export default class LoginByPhone extends BaseComponent {
         this.state = {
             phoneNumber: "",
             verCode: "",
-            verText: "获取验证码"
+            verText: "获取验证码",
         }
 
         this.timer = null;
@@ -33,9 +33,17 @@ export default class LoginByPhone extends BaseComponent {
         this.loginHandle = this.loginHandle.bind(this);
     }
 
-    componentWillUnmount(){
-        clearInterval();
+    async componentWillMount() {
+        await GetBasicInfo.setLoginStatus("false");
+        await GetBasicInfo.setNativeCookie('');
+
         this.setState({verText: "获取验证码"});
+    }
+
+    componentWillUnmount(){
+        if(typeof this.timer =='function' && !!this.timer){
+            clearInterval(this.timer);
+        }
     }
 
     headerRender() {

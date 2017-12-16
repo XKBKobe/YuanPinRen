@@ -39,6 +39,16 @@ const bankArray = [
 ]
 const GetBasicInfo = NativeModules.GetBasicInfo;
 
+let photoOptions = {
+    //底部弹出框选项
+    quality:0.75,
+    noData:false,
+    storageOptions: {
+        skipBackup: true,
+        path:'images'
+    }
+}
+
 class BindBankCard extends Component {
     constructor(props) {
         super(props);
@@ -89,7 +99,7 @@ class BindBankCard extends Component {
     async pickImageClick(isPositive) {
         let self = this;
         await GetBasicInfo.getPhotoAuthorizate();
-        ImagePicker.launchImageLibrary({}, (response) => {
+        ImagePicker.launchImageLibrary(photoOptions, (response) => {
             if (response.uri) {
                 let localUrl = "";
                 if (Platform.OS === 'ios') {
