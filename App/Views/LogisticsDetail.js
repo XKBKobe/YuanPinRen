@@ -80,7 +80,7 @@ export default class logisticsDetail extends BaseComponent {
                         <View style={{backgroundColor: '#ffffff', marginTop: 10, paddingLeft: 15}}>
                             <View style={{flexDirection: 'row', height: 40, alignItems: 'center'}}>
                                 <Text>配送方式：</Text>
-                                <Text style={{color: '#999999'}}>EMS</Text>
+                                <Text style={{color: '#999999'}}>{this.state.data.com}</Text>
                             </View>
                             <View style={{flexDirection: 'row', height: 20, alignItems: 'center'}}>
                                 <Text>物流单号：</Text>
@@ -142,7 +142,7 @@ export default class logisticsDetail extends BaseComponent {
                     marginLeft: 46, marginRight: 10, borderBottomWidth: 1, width: Dimensions.get('window').width - 46,
                     borderBottomColor: '#dddddd', paddingTop: 3
                 }}>
-                    <Text>{itemData.context}</Text>
+                    <Text style={this.firstListText(rowId)}>{itemData.context}</Text>
                     <Text style={{color: '#999999', paddingTop: 5}}>{itemData.time}</Text>
                 </View>
                 {this.radiusSet(rowId)}
@@ -150,6 +150,13 @@ export default class logisticsDetail extends BaseComponent {
             </View>
         );
     }
+
+    firstListText(index){
+        let color = {};
+        index == 0? color = {color:'#1CBD37'}: color = {color:'#999999'};
+        return color;
+    }
+
 
     radiusSet(rowId) {
         let len = this.state.data.data.length;
@@ -200,7 +207,7 @@ const styles = StyleSheet.create({
         width: 18,
         height: 18,
         borderRadius: 9,
-        backgroundColor: '#ff6700',
+        backgroundColor: '#1CBD37',
         left: 15,
         top: 3,
         position: 'absolute'
@@ -218,7 +225,7 @@ const styles = StyleSheet.create({
         width: 1,
         height: 70,
         borderRadius: 8,
-        backgroundColor: '#ff6700',
+        backgroundColor: '#1CBD37',
         left: 23,
         top: 14,
         position: 'absolute'

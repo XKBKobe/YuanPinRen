@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 1,
         alignItems: 'center',
-        justifyContent: 'space-between',
+        // justifyContent: 'center',
         height: 44,
         paddingLeft: 14,
         paddingRight: 16,
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft:10
+        marginRight:20
     },
 
     drawButton: {

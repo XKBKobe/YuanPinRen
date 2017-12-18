@@ -58,7 +58,8 @@ import Psychologist from './Views/Psychologist';
 import Fuwuxieyi from './Views/Fuwuxieyi';
 import Yinsixieyi from './Views/Yinsixieyi';
 import DrawRecord from './Views/DrawRecord';
-import LogisticsDetail from './Views/LogisticsDetail'
+import LogisticsDetail from './Views/LogisticsDetail';
+import DrawRecordDetail from './Views/DrawRecordDetail';
 
 const RouterWithRedux = connect()(Router);
 const GetBasicInfo = NativeModules.GetBasicInfo;
@@ -137,6 +138,7 @@ export default class App extends Component {
                             <Scene key='Yinsixieyi' component={Yinsixieyi}/>
                             <Scene key='DrawRecord' component={DrawRecord}/>
                             <Scene key='LogisticsDetail' component={LogisticsDetail}/>
+                            <Scene key='DrawRecordDetail' component={DrawRecordDetail}/>
                         </Scene>
                     </Scene>
                 </RouterWithRedux>

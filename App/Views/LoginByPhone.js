@@ -37,7 +37,7 @@ export default class LoginByPhone extends BaseComponent {
         await GetBasicInfo.setLoginStatus("false");
         await GetBasicInfo.setNativeCookie('');
 
-        this.setState({verText: "获取验证码"});
+        // this.setState({verText: "获取验证码"});
     }
 
     componentWillUnmount(){

@@ -440,6 +440,7 @@ export default class MyOrder extends BaseComponent {
     }
 
     LoadLessData() {
+        console.log('111111111111');
         if (1 == this.state.currentPage || this.state.isLoadingMore) {
             return;
         }
