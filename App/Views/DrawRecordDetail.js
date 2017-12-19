@@ -61,7 +61,10 @@ export default class DrawRecordDetail extends BaseComponent {
             <View style={styles.contentView}>
                 <View style={{height: 100, backgroundColor: '#ffffff', paddingTop: 10, paddingLeft: 10}}>
                     <Text style={{paddingTop: 6,color:'#808080'}}>{this.drawState(this.state.detail.withdrawStatus)}</Text>
-                    <Text style={{fontSize: 40,paddingTop:5}}>-{this.state.detail.withdrawMoney}</Text>
+                    <View style={{flexDirection:'row'}}>
+                        <Text style={{fontSize: 40,paddingTop:5}}>-{this.state.detail.withdrawMoney}</Text>
+                        <Text style={{paddingTop:30}}>元</Text>
+                    </View>
                 </View>
 
                 <View style={{backgroundColor: '#ffffff', marginTop: 10,height:90,flexDirection:'row',paddingTop:20,position:'relative',borderBottomWidth: 1,
@@ -148,7 +151,6 @@ const styles = StyleSheet.create({
     listHeader:{
         paddingTop: 10,
         flex:1,
-        paddingLeft:10,
         color:'#808080'
     },
     listDetail:{

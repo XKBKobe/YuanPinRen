@@ -36,18 +36,17 @@ export default class BestShare extends BaseComponent {
             goodsListData: [],
             isUseful: true,
             appUrl: "",
-            isShouSerchModule: true,
             hideSearch: false,
             fadeInOut: new Animated.Value(-200),
+            tagData: [],
         };
 
         this.iosStatusBarRender = this.iosStatusBarRender.bind(this);
         this.goodsItemRender = this.goodsItemRender.bind(this);
         this.searchSelect = this.searchSelect.bind(this);
         this.startAnimation = this.startAnimation.bind(this);
-
-        this.animationshow = {top: '60', yoyo: false, duration: 1500};
-        this.animationhide = {top: '-200', yoyo: false, duration: 1500};
+        this.renderTagList = this.renderTagList.bind(this);
+        this.queryTagLabel = this.queryTagLabel.bind(this);
     }
 
     async componentWillMount() {
@@ -70,6 +69,10 @@ export default class BestShare extends BaseComponent {
         }
     }
 
+    componentWillUnmount(){
+
+    }
+
     requeryNetworkData(id) {
         //let id = this.state.whichItemChoosed;
         requestData('/index/Item/share_item_list', "POST", "label=" + id)
@@ -89,6 +92,57 @@ export default class BestShare extends BaseComponent {
                         alert(data.errmsg);
                         this.setState({pageStatus: "NODATA"});
                     }
+                }
+            }, (error) => {
+
+            });
+    }
+
+    //筛选标签
+    queryTagList(tag) {
+        console.log('筛选标签 ' + tag);
+        requestData('/index/Other/tag_list', "POST", "label=" + tag)
+            .then((data) => {
+                if (0 == data.errno) {
+                    if (data.data && data.data.length > 0) {
+                        let tagData = data.data;
+                        for(let i in tagData){
+                            tagData[i]['selected'] = false;
+                        }
+                        this.setState({tagData:tagData});
+                        console.log('this.state.tagData '+ JSON.stringify(tagData))
+                    }
+                } else {
+
+                }
+            }, (error) => {
+
+            });
+    }
+
+    queryTagLabel(){
+        let that =this;
+        let tagId ='';
+        console.log('tagId  '+JSON.stringify(that.state.tagData));
+        for(var i in that.state.tagData){
+            if (that.state.tagData[i]['selected']) {
+                tagId += that.state.tagData[i].tagId + ','
+            }
+        }
+        if(!tagId){
+            return;
+        }
+        tagId = tagId.substring(0, tagId.length - 1);
+        requestData('/index/Other/index_new', "POST", "label=" + that.state.whichItemChoosed +"&tagId" +tagId)
+            .then((data) => {
+                if (0 == data.errno) {
+                    if (0 == data.data.goodsList.total) {
+                        that.setState({pageStatus: "NODATA"});
+                        return;
+                    }
+                    that.setState({goodsListData: data.data.goodsList.data});
+                } else {
+
                 }
             }, (error) => {
 
@@ -133,7 +187,9 @@ export default class BestShare extends BaseComponent {
                     </Text>
                     <Text style={styles.tabSelect} onPress={() => {
                         this.startAnimation(0);
-                        this.setState({isShouSerchModule: !this.state.isShouSerchModule, hideSearch: true});
+                        this.setState({hideSearch: true});
+                        //筛选标签
+                        this.queryTagList(this.state.whichItemChoosed);
                     }}>筛选
                     </Text>
                 </View>
@@ -148,7 +204,12 @@ export default class BestShare extends BaseComponent {
                                     pageStatus: 'LOADING'
                                 });
                                 this.requeryNetworkData(1);
+                                //显示筛选
+                                if (!!this.state.hideSearch) {
+                                    this.queryTagList(1);
+                                }
                             }
+
                         }}
                     >
                         <Text style={{fontSize: 12, color: tab1TextColor}}>
@@ -164,6 +225,10 @@ export default class BestShare extends BaseComponent {
                                     pageStatus: 'LOADING'
                                 });
                                 this.requeryNetworkData(2);
+                                //显示筛选
+                                if (!!this.state.hideSearch) {
+                                    this.queryTagList(2);
+                                }
                             }
                         }}
                     >
@@ -183,6 +248,7 @@ export default class BestShare extends BaseComponent {
         return (
             <ClickScope
                 onPress={() => {
+                    this.startAnimation(-200);
                     Actions.GoodsDetail({
                         goodsId: itemData.goodsId
                     })
@@ -254,40 +320,85 @@ export default class BestShare extends BaseComponent {
         console.log('fadeInOut  ' + value);
         Animated.timing(this.state.fadeInOut, {
             toValue: value,
-            duration: 2000,
+            duration: 1000,
             easing: Easing.linear,// 线性的渐变函数
         }).start();
     }
 
     searchSelect() {
-        console.log('this.state.hideSearch  ' + JSON.stringify(this.state.fadeInOut))
         if (!this.state.hideSearch) {
             return null;
         }
-        let animationModule;
-        this.state.isShouSerchModule ? animationModule = this.animationhide : animationModule = this.animationshow;
-        console.log('animationModule  ' + JSON.stringify(animationModule))
         return (
             <Animated.View style={{
-                height: 100,
+                height: 120,
                 width: WINDOW_WIDTH,
-                backgroundColor: 'red',
+                backgroundColor: '#fff',
                 position: 'absolute',
                 zIndex: 1000,
                 flexDirection: 'row',
                 top: this.state.fadeInOut
             }}>
-                <Text style={{flex:1}} onPress={() => {
-                    this.startAnimation(40)
-                }}>展示</Text>
 
-
-                <Text style={{flex:1}} onPress={() => {
-                    this.startAnimation(-200)
-
-                }}>隐藏</Text>
+                <View style={{position: 'relative'}}>
+                    <View style={{flexDirection: 'row', flexWrap: 'wrap', width: WINDOW_WIDTH}}>
+                        {this.renderTagList(this.state.tagData)}
+                    </View>
+                    <View style={{flexDirection: 'row', flex: 1, position: 'absolute', bottom: 15}}>
+                        <ClickScope style={{flex: 1, marginLeft: 10, width: 70, alignItems: 'flex-start'}} onPress={() => {
+                            this.startAnimation(-200);
+                        }}>
+                            <Text style={{
+                                textAlign: 'center',
+                                borderWidth: 1,
+                                borderRadius: 3,
+                                width: 70,
+                                height: 24,
+                                lineHeight:24,
+                                borderColor: "#ddd"
+                            }}>取消</Text>
+                        </ClickScope>
+                        <ClickScope style={{flex: 1, alignItems: 'flex-end', marginRight: 10}} onPress={() => {
+                            this.startAnimation(-200);
+                            this.queryTagLabel()
+                        }}>
+                            <Text style={{
+                                textAlign: 'center',
+                                width: 70,
+                                height: 24,
+                                lineHeight:24,
+                                color: '#fff',
+                                borderColor: "#ff6700",
+                                backgroundColor:'#ff6700',
+                                borderWidth: 1,
+                                borderRadius: 5,
+                                overflow:'hidden'
+                            }}>确定</Text>
+                        </ClickScope>
+                    </View>
+                </View>
 
             </Animated.View>
+        )
+    }
+
+    renderTagList(tagData) {
+        var that = this;
+        return (
+            tagData.map(function (data, index) {
+                let tagListStyle;
+                !!data.selected ? tagListStyle = styles.tagSelected : tagListStyle = styles.tagNormal;
+                return (
+                    <ClickScope key={index} onPress={() => {
+                        that.state.tagData[index]['selected'] = !that.state.tagData[index]['selected'];
+                        that.setState({
+                            tagData: that.state.tagData
+                        })
+                    }}>
+                        <Text style={tagListStyle}>{data.tagName}</Text>
+                    </ClickScope>
+                )
+            })
         )
     }
 
@@ -345,5 +456,34 @@ const styles = StyleSheet.create({
         paddingTop: 2,
         paddingRight: 10,
         lineHeight: 44
+    },
+    tagNormal: {
+        height: 24,
+        lineHeight: 24,
+        width: 70,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        textAlign: 'center',
+        borderWidth: 1,
+        borderRadius: 3,
+        borderColor: "#ddd"
+    },
+    tagSelected: {
+        height: 24,
+        lineHeight: 24,
+        width: 70,
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 5,
+        marginBottom: 5,
+        textAlign: 'center',
+        borderWidth: 1,
+        borderRadius: 3,
+        color: '#fff',
+        backgroundColor: '#ff6700',
+        borderColor: "#ff6700",
+        overflow:'hidden'
     }
 });
