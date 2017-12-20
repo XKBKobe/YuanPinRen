@@ -145,18 +145,32 @@ RCT_REMAP_METHOD(getPhotoAuthorizate,resolve:(RCTPromiseResolveBlock)resolve
 {
     ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
     if (author == kCLAuthorizationStatusRestricted || author ==kCLAuthorizationStatusDenied){
+      
       //无权限 引导去开启
-      NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-      dispatch_async(dispatch_get_main_queue(), ^{
-        if ([[UIApplication sharedApplication] canOpenURL:url]) {
-            [[UIApplication sharedApplication] openURL:url];
-        }
-      });
-      resolve(@"true");
+//      NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+//      dispatch_async(dispatch_get_main_queue(), ^{
+//        if ([[UIApplication sharedApplication] canOpenURL:url]) {
+//            [[UIApplication sharedApplication] openURL:url];
+//        }
+//      });
+      resolve(@"false");
     }else {
       resolve(@"true");
     }
 }
+
+RCT_EXPORT_METHOD(getPicSettings) {
+  
+  //无权限 引导去开启
+  NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+      [[UIApplication sharedApplication] openURL:url];
+    }
+  });
+}
+
+
 
 RCT_REMAP_METHOD(getLoginStatus, resolve:(RCTPromiseResolveBlock)resolve
                  rejecterr:(RCTPromiseRejectBlock)reject)

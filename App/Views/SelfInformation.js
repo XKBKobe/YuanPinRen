@@ -56,7 +56,22 @@ class SelfInformation extends BaseComponent {
 
     async pickImageClick() {
         //授权相册权限
-        await GetBasicInfo.getPhotoAuthorizate();
+        let author = await GetBasicInfo.getPhotoAuthorizate();
+        if (author == 'false') {
+            Alert.alert("提示", '请到设置-隐私开启相册权限', [
+                {
+                    text: 'cancel', onPress: () => {
+                        console.log('cancel')
+                    }
+                },
+                {
+                    text: 'ok', onPress: () => {
+                        GetBasicInfo.getPicSettings()
+                    }
+                },
+
+            ]);
+        }
         ImagePicker.launchImageLibrary({}, (response) => {
             if (response.uri) {
                 let localUrl = "";

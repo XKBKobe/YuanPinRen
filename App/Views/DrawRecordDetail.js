@@ -15,7 +15,7 @@ import {
 import BaseComponent from "../Components/BaseComponent";
 import Header from '../Components/Header';
 import requestData from '../NetWork/request';
-import {formatMonthDate,formatFullDate} from "../Utils/toolFunctions";
+import {formatMonthDate, formatFullDate} from "../Utils/toolFunctions";
 import ClickScope from '../Components/ClickScope';
 
 export default class DrawRecordDetail extends BaseComponent {
@@ -27,6 +27,8 @@ export default class DrawRecordDetail extends BaseComponent {
         };
 
         this.drawState = this.drawState.bind(this);
+        this.renderColor = this.renderColor.bind(this);
+        this.renderLast = this.renderLast.bind(this);
 
     }
 
@@ -60,33 +62,69 @@ export default class DrawRecordDetail extends BaseComponent {
         return (
             <View style={styles.contentView}>
                 <View style={{height: 100, backgroundColor: '#ffffff', paddingTop: 10, paddingLeft: 10}}>
-                    <Text style={{paddingTop: 6,color:'#808080'}}>{this.drawState(this.state.detail.withdrawStatus)}</Text>
-                    <View style={{flexDirection:'row'}}>
-                        <Text style={{fontSize: 40,paddingTop:5}}>-{this.state.detail.withdrawMoney}</Text>
-                        <Text style={{paddingTop:30}}>元</Text>
+                    <Text style={{
+                        paddingTop: 6,
+                        color: '#808080'
+                    }}>{this.drawState(this.state.detail.withdrawStatus)}</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{fontSize: 40, paddingTop: 5}}>-{this.state.detail.withdrawMoney}</Text>
+                        <Text style={{paddingTop: 30}}>元</Text>
                     </View>
                 </View>
 
-                <View style={{backgroundColor: '#ffffff', marginTop: 10,height:90,flexDirection:'row',paddingTop:20,position:'relative',borderBottomWidth: 1,
-                    borderBottomColor: '#dddddd'}}>
-                    <View style={{flex:1,alignItems:'center'}}>
-                        <View style={{width:14,height:14,marginBottom:5,borderRadius:7,backgroundColor:'#ff6700'}}></View>
-                        <Text sytle={{marginBottom:5,color:'#808080'}}>已提交</Text>
-                        <Text style={{color:'#808080'}}>{formatMonthDate(this.state.detail.addTime *1000)}</Text>
+                <View style={{
+                    backgroundColor: '#ffffff',
+                    marginTop: 10,
+                    height: 90,
+                    flexDirection: 'row',
+                    paddingTop: 20,
+                    position: 'relative',
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#dddddd'
+                }}>
+
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                        <View style={{
+                            width: 14,
+                            height: 14,
+                            marginBottom: 5,
+                            borderRadius: 7,
+                            backgroundColor: '#ff6700'
+                        }}></View>
+                        <View></View>
+                        <Text style={{color: '#ff6700'}}>已提交</Text>
+                        <Text style={{color: '#808080'}}>{formatMonthDate(this.state.detail.addTime * 1000)}</Text>
                     </View>
-                    <View style={{flex:1,alignItems:'center'}}>
-                        <View style={{width:14,height:14,marginBottom:5,borderRadius:7,backgroundColor:'#ff6700'}}></View>
-                        <Text sytle={{color:'#808080'}}>已审核</Text>
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                        <View style={{
+                            width: 14,
+                            height: 14,
+                            marginBottom: 5,
+                            borderRadius: 7,
+                            backgroundColor: '#ff6700'
+                        }}></View>
+                        <View></View>
+                        <Text style={{color: '#ff6700'}}>已审核</Text>
                     </View>
-                    <View style={{flex:1,alignItems:'center'}}>
-                        <View style={{width:16,height:16,marginBottom:5,borderRadius:8,backgroundColor:'#ff6700'}}></View>
-                        <Text sytle={{color:'#808080'}}>已转账</Text>
+                    <View style={{flex: 1, alignItems: 'center'}}>
+                        <View style={{
+                            width: 16,
+                            height: 16,
+                            marginBottom: 5,
+                            borderRadius: 8,
+                            backgroundColor: this.renderColor(this.state.detail.withdrawStatus)
+                        }}></View>
+                        <View></View>
+                        <Text
+                            style={{color: this.renderColor(this.state.detail.withdrawStatus)}}>{this.drawState(this.state.detail.withdrawStatus)}</Text>
                     </View>
-                    <View style={{position:'absolute',width:Dimensions.get('window').width/6 *4,height:1,backgroundColor:'#ff6700',top:26,left: Dimensions.get('window').width/6}}></View>
+
+                    <View style={styles.lineProcess}></View>
+                    <View style={this.renderLast(this.state.detail.withdrawStatus)}></View>
                 </View>
 
 
-                <View style={{backgroundColor:'#ffffff',padding:10}}>
+                <View style={{backgroundColor: '#ffffff', padding: 10}}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.listHeader}>流水号</Text>
                         <Text style={styles.listDetail}>{this.state.detail.withdrawId}</Text>
@@ -109,12 +147,35 @@ export default class DrawRecordDetail extends BaseComponent {
 
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.listHeader}>收款银行卡</Text>
-                        <Text style={styles.listDetail}>{this.state.detail.bankName}(***{this.state.detail.bankCardNo.slice(-2)})</Text>
+                        <Text
+                            style={styles.listDetail}>{this.state.detail.bankName}(***{this.state.detail.bankCardNo.slice(-2)})</Text>
                     </View>
                 </View>
             </View>
         );
 
+    }
+
+    renderColor(type) {
+        let typeColor;
+        switch (type) {
+            case 1:
+                typeColor = '#808080';
+                break;
+            case 2:
+                typeColor = '#808080';
+                break;
+            default:
+                typeColor = '#ff6700';
+        }
+        return typeColor;
+    }
+
+    renderLast(type) {
+        if (type == 3) {
+            return styles.lineEndHigh;
+        }
+        return styles.lineEnd;
     }
 
 
@@ -135,7 +196,6 @@ export default class DrawRecordDetail extends BaseComponent {
     }
 
 
-
     render() {
         return super.rootSceneRender(this.state.pageStatus);
     }
@@ -148,15 +208,39 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: '#f8f8f8'
     },
-    listHeader:{
-        paddingTop: 10,
-        flex:1,
-        color:'#808080'
+    listHeader: {
+        paddingTop: 12,
+        flex: 1,
+        color: '#999999'
     },
-    listDetail:{
+    listDetail: {
         paddingTop: 10,
-        alignItems:'flex-end',
-        flex:2,
-        fontSize:16
+        alignItems: 'flex-end',
+        flex: 2,
+        fontSize: 16,
+        color: '#808080',
+    },
+    lineProcess: {
+        position: 'absolute', width: Dimensions.get('window').width / 6 * 2,
+        height: 1,
+        backgroundColor: '#ff6700',
+        top: 26,
+        left: Dimensions.get('window').width / 6
+    },
+    lineEnd: {
+        position: 'absolute', width: Dimensions.get('window').width / 6 * 2,
+        height: 1,
+        backgroundColor: '#808080',
+        top: 26,
+        left: Dimensions.get('window').width / 6 * 3,
+        zIndex: -100,
+    },
+    lineEndHigh: {
+        position: 'absolute', width: Dimensions.get('window').width / 6 * 2,
+        height: 1,
+        backgroundColor: '#ff6700',
+        top: 26,
+        left: Dimensions.get('window').width / 6 * 3,
+        zIndex: -100,
     }
 });

@@ -133,13 +133,14 @@ export default class DrawRecord extends BaseComponent {
                         <Text>{itemData.bankName}</Text>
                         <Text style={{
                             fontSize: 12,
-                            paddingTop: 3
+                            paddingTop: 3,
+                            color:'#808080'
                         }}>{this.drawTime(itemData.successTime * 1000, itemData.addTime * 1000, itemData.withdrawStatus)}</Text>
                     </View>
 
                     <View style={{flex: 1, flexDirection: 'column', alignItems: 'flex-end', marginRight: 20}}>
                         <Text>¥{itemData.withdrawMoney}</Text>
-                        <Text style={{fontSize: 12, paddingTop: 4}}>{this.drawState(this.state.withdrawStatus)}</Text>
+                        <Text style={{fontSize: 12, paddingTop: 4,color:'#808080'}}>{this.drawState(this.state.withdrawStatus)}</Text>
                     </View>
                     <Image
                         style={{height: 14, width: 7, position: 'absolute', top: 18, right: 10}}

@@ -320,7 +320,7 @@ export default class BestShare extends BaseComponent {
         console.log('fadeInOut  ' + value);
         Animated.timing(this.state.fadeInOut, {
             toValue: value,
-            duration: 1000,
+            duration: 800,
             easing: Easing.linear,// 线性的渐变函数
         }).start();
     }
@@ -354,7 +354,7 @@ export default class BestShare extends BaseComponent {
                                 borderRadius: 3,
                                 width: 70,
                                 height: 24,
-                                lineHeight:24,
+                                lineHeight:22,
                                 borderColor: "#ddd"
                             }}>取消</Text>
                         </ClickScope>
@@ -366,7 +366,7 @@ export default class BestShare extends BaseComponent {
                                 textAlign: 'center',
                                 width: 70,
                                 height: 24,
-                                lineHeight:24,
+                                lineHeight:22,
                                 color: '#fff',
                                 borderColor: "#ff6700",
                                 backgroundColor:'#ff6700',
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
     },
     tagNormal: {
         height: 24,
-        lineHeight: 24,
+        lineHeight: 22,
         width: 70,
         marginLeft: 10,
         marginRight: 10,
@@ -472,7 +472,7 @@ const styles = StyleSheet.create({
     },
     tagSelected: {
         height: 24,
-        lineHeight: 24,
+        lineHeight: 22,
         width: 70,
         marginLeft: 10,
         marginRight: 10,

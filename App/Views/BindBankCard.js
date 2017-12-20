@@ -157,7 +157,7 @@ class BindBankCard extends Component {
                 console.log("  \n\n ----------- ", data);
                 if (data.errno == 0) {
                     Alert.alert("提示", '提交成功', [
-                        {text: 'OK', onPress: () => Actions.pop()},
+                        {text: 'ok', onPress: () => Actions.pop()},
                     ]);
                     // Actions.pop();
                 } else {
