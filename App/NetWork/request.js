@@ -7,6 +7,8 @@ import {
 import {Actions, ActionConst} from 'react-native-router-flux';
 
 const GetBasicInfo = NativeModules.GetBasicInfo;
+
+//http://apptest.yuanpinren.cn
 const RequestBaseURL = 'http://app.yuanpinren.cn';
 
 export default async function request(api, method, data = "") {

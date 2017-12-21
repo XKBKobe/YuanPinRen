@@ -26,6 +26,7 @@ import {bindActionCreators} from 'redux';
 import * as MineActions from '../Reducer/Actions/MineActions';
 import requestData from '../NetWork/request';
 import ImagePicker from 'react-native-image-picker';
+import ImageCropPicker from "react-native-image-crop-picker";
 
 const GetBasicInfo = NativeModules.GetBasicInfo;
 
@@ -57,6 +58,7 @@ class SelfInformation extends BaseComponent {
     async pickImageClick() {
         //授权相册权限
         let author = await GetBasicInfo.getPhotoAuthorizate();
+        console.log('author   '+author);
         if (author == 'false') {
             Alert.alert("提示", '请到设置-隐私开启相册权限', [
                 {
@@ -71,7 +73,44 @@ class SelfInformation extends BaseComponent {
                 },
 
             ]);
+        }else if (author == 'true'){
+            //从相册中选择单张图片
+            ImageCropPicker.openPicker({
+                width: 400,
+                height: 300,
+                cropping: false,
+                mediaType:'photo'
+            }).then(image => {
+                console.log('image.path  '+image.path);
+                let formData = new FormData();
+                let file = {uri: image.path, type: 'multipart/form-data', name: 'avatar.png'};
+                formData.append("avatar", file);
+                requestData("/index/User/update_data", "POST", formData)
+                    .then((data) => {
+                        if (data.errno == 0) {
+                            this.props.MineActions.getUserInfo("");
+                        } else {
+                            Alert.alert("上传失败: ", data.errmsg);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        Alert.alert("上传头像时发生了不可预料的错误！");
+                    });
+            })
+        }else{ //author 授权
+          // let authority =  await GetBasicInfo.getPhotoAuthorizate();
+          //   console.log('authority authority  '  + authority);
+          // if(authority == 'false'){
+          //
+          //     console.log('authority false')
+          // }
+
         }
+
+
+
+        /**
         ImagePicker.launchImageLibrary({}, (response) => {
             if (response.uri) {
                 let localUrl = "";
@@ -98,6 +137,7 @@ class SelfInformation extends BaseComponent {
                     });
             }
         });
+         **/
     }
 
     pageHasDataRender() {

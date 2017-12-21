@@ -133,7 +133,9 @@ export default class BestShare extends BaseComponent {
             return;
         }
         tagId = tagId.substring(0, tagId.length - 1);
-        requestData('/index/Other/index_new', "POST", "label=" + that.state.whichItemChoosed +"&tagId" +tagId)
+
+        console.log("label=" + that.state.whichItemChoosed +"&tagId=" +tagId);
+        requestData('/index/Other/index_new', "POST", "label=" + that.state.whichItemChoosed +"&tagId=" +tagId)
             .then((data) => {
                 if (0 == data.errno) {
                     if (0 == data.data.goodsList.total) {
@@ -320,7 +322,7 @@ export default class BestShare extends BaseComponent {
         console.log('fadeInOut  ' + value);
         Animated.timing(this.state.fadeInOut, {
             toValue: value,
-            duration: 800,
+            duration: 400,
             easing: Easing.linear,// 线性的渐变函数
         }).start();
     }
@@ -460,10 +462,11 @@ const styles = StyleSheet.create({
     tagNormal: {
         height: 24,
         lineHeight: 22,
-        width: 70,
         marginLeft: 10,
         marginRight: 10,
         marginTop: 5,
+        paddingLeft:5,
+        paddingRight:5,
         marginBottom: 5,
         textAlign: 'center',
         borderWidth: 1,
@@ -473,8 +476,9 @@ const styles = StyleSheet.create({
     tagSelected: {
         height: 24,
         lineHeight: 22,
-        width: 70,
         marginLeft: 10,
+        paddingLeft:5,
+        paddingRight:5,
         marginRight: 10,
         marginTop: 5,
         marginBottom: 5,

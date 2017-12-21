@@ -16,6 +16,7 @@
 #import <AlipaySDK/AlipaySDK.h>
 #import "Order.h"
 #import "RSADataSigner.h"
+#import <Photos/Photos.h>
 
 @implementation GetBasicInfo
 

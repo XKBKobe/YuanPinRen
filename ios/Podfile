@@ -2,6 +2,8 @@ platform :ios, '8.0'
 
 def pods
 	pod 'AFNetworking'
+    pod 'RSKImageCropper'
+    pod 'QBImagePickerController'
 end
 target ‘YuanPinRen’ do
 	pods

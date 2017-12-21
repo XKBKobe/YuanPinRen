@@ -19,6 +19,7 @@ import ButtonBar from '../Components/ButtonBar';
 import requestData from '../NetWork/request';
 import Header from '../Components/Header';
 import ImagePicker from 'react-native-image-picker';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
 const bankArray = [
     {image: ImgSrc.INDUSTRIAL_BANK, id: "01"},
@@ -40,11 +41,13 @@ const bankArray = [
 const GetBasicInfo = NativeModules.GetBasicInfo;
 
 let photoOptions = {
-    quality:0.75,
-    noData:false,
+    quality: 1,
+    noData: false,
     storageOptions: {
         skipBackup: true,
-        path:'images'
+        path: 'images',
+        cameraRoll: true,
+        waitUntilSaved: false
     }
 }
 
@@ -97,23 +100,56 @@ class BindBankCard extends Component {
      */
     async pickImageClick(isPositive) {
         let self = this;
-        await GetBasicInfo.getPhotoAuthorizate();
-        ImagePicker.launchImageLibrary(photoOptions, (response) => {
-            if (response.uri) {
-                let localUrl = "";
-                if (Platform.OS === 'ios') {
-                    localUrl = response.uri.replace('file://', '');
-                } else {
-                    localUrl = response.uri;
-                }
+        let author = await GetBasicInfo.getPhotoAuthorizate();
+        console.log('author   ' + author);
+        if (author == 'false') {
+            Alert.alert("提示", '请到设置-隐私开启相册权限', [
+                {
+                    text: 'cancel', onPress: () => {
+                        console.log('cancel')
+                    }
+                },
+                {
+                    text: 'ok', onPress: () => {
+                        GetBasicInfo.getPicSettings()
+                    }
+                },
 
+            ]);
+        } else if (author == 'true') {
+            //从相册中选择单张图片
+            ImageCropPicker.openPicker({
+                width: 600,
+                height: 600,
+                cropping: false,
+                mediaType: 'photo'
+            }).then(image => {
+                console.log('image.path  '+image.path);
                 if (isPositive == true) {
-                    self.setState({positiveImgUrl: localUrl});
+                    self.setState({positiveImgUrl: image.path});
                 } else {
-                    self.setState({negativeImgUrl: localUrl});
+                    self.setState({negativeImgUrl: image.path});
                 }
-            }
-        });
+            })
+        }
+
+
+        // ImagePicker.launchImageLibrary(photoOptions, (response) => {
+        //     if (response.uri) {
+        //         let localUrl = "";
+        //         if (Platform.OS === 'ios') {
+        //             localUrl = response.uri.replace('file://', '');
+        //         } else {
+        //             localUrl = response.uri;
+        //         }
+        //
+        //         if (isPositive == true) {
+        //             self.setState({positiveImgUrl: localUrl});
+        //         } else {
+        //             self.setState({negativeImgUrl: localUrl});
+        //         }
+        //     }
+        // });
     }
 
     /*
