@@ -29,6 +29,7 @@ export default class DrawRecordDetail extends BaseComponent {
         this.drawState = this.drawState.bind(this);
         this.renderColor = this.renderColor.bind(this);
         this.renderLast = this.renderLast.bind(this);
+        this.renderTime = this.renderTime.bind(this);
 
     }
 
@@ -67,7 +68,7 @@ export default class DrawRecordDetail extends BaseComponent {
                         color: '#808080'
                     }}>{this.drawState(this.state.detail.withdrawStatus)}</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Text style={{fontSize: 40, paddingTop: 5}}>-{this.state.detail.withdrawMoney}</Text>
+                        <Text style={{fontSize: 40, paddingTop: 5}}>{this.state.detail.withdrawMoney}</Text>
                         <Text style={{paddingTop: 30}}>元</Text>
                     </View>
                 </View>
@@ -135,10 +136,7 @@ export default class DrawRecordDetail extends BaseComponent {
                         <Text style={styles.listDetail}>现金余额-提现</Text>
                     </View>
 
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={styles.listHeader}>日期</Text>
-                        <Text style={styles.listDetail}>{formatFullDate(this.state.detail.successTime * 1000)}</Text>
-                    </View>
+                    <View>{this.renderTime(this.state.detail.withdrawStatus)}</View>
 
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.listHeader}>类型</Text>
@@ -193,6 +191,22 @@ export default class DrawRecordDetail extends BaseComponent {
                 typeText = '提现成功';
         }
         return typeText;
+    }
+
+    renderTime(type) {
+        console.log('type  '+type);
+        if (type == 3 || type == 2) {
+            return (
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.listHeader}>日期</Text>
+                    <Text
+                        style={styles.listDetail}>{formatFullDate(this.state.detail.addTime * 1000)}</Text>
+                </View>
+            )
+        } else {
+            return null;
+        }
+
     }
 
 

@@ -34,6 +34,7 @@ export default class DrawRecord extends BaseComponent {
         this.orderItemRender = this.orderItemRender.bind(this);
         this.drawTime = this.drawTime.bind(this);
         this.drawState = this.drawState.bind(this);
+        this.renderWith = this.renderWith.bind(this);
 
     }
 
@@ -122,25 +123,29 @@ export default class DrawRecord extends BaseComponent {
         );
     }
 
-    orderItemRender(itemData) {
+    orderItemRender(itemData, sectionId, rowId) {
         return (
-            <View style={{backgroundColor: '#ffffff'}}>
+            <View style={{backgroundColor: '#ffffff', borderTopWidth: this.renderWith(rowId),borderColor:'#dddddd'}}>
 
                 <ClickScope style={{flex: 1, flexDirection: 'row', padding: 10, position: 'relative'}} onPress={() => {
                     Actions.DrawRecordDetail({detail: itemData})
                 }}>
-                    <View style={{flex: 1, flexDirection: 'column'}}>
+                    <View style={{flex: 2, flexDirection: 'column'}}>
                         <Text>{itemData.bankName}</Text>
                         <Text style={{
                             fontSize: 12,
                             paddingTop: 3,
-                            color:'#808080'
+                            color: '#808080'
                         }}>{this.drawTime(itemData.successTime * 1000, itemData.addTime * 1000, itemData.withdrawStatus)}</Text>
                     </View>
 
                     <View style={{flex: 1, flexDirection: 'column', alignItems: 'flex-end', marginRight: 20}}>
                         <Text>¥{itemData.withdrawMoney}</Text>
-                        <Text style={{fontSize: 12, paddingTop: 4,color:'#808080'}}>{this.drawState(this.state.withdrawStatus)}</Text>
+                        <Text style={{
+                            fontSize: 12,
+                            paddingTop: 4,
+                            color: '#808080'
+                        }}>{this.drawState(itemData.withdrawStatus)}</Text>
                     </View>
                     <Image
                         style={{height: 14, width: 7, position: 'absolute', top: 18, right: 10}}
@@ -161,6 +166,7 @@ export default class DrawRecord extends BaseComponent {
     }
 
     drawState(type) {
+        console.log('withdrawStatus  ' + type)
         //   3（提现状态 1 提现申请中  2 提现失败  3 提现成功）,
         let typeText;
         switch (type) {
@@ -176,6 +182,13 @@ export default class DrawRecord extends BaseComponent {
         return typeText;
     }
 
+    renderWith(index) {
+        console.log(' index  '+index)
+        if(index != 0){
+            return 1;
+        }
+
+    }
 
     //下拉刷新
     LoadLessData() {

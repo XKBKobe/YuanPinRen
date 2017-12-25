@@ -28,6 +28,9 @@ export default class ClickScope extends Component {
     }
 
     render() {
+        console.log('opacity  '+JSON.stringify(this.props.style));
+
+        console.log('animate  '+JSON.stringify(this.props.animate));
         if ('opacity' == this.props.animate) {
             return (
                 <TouchableOpacity
@@ -40,14 +43,13 @@ export default class ClickScope extends Component {
             );
         } else {
             return (
-                <TouchableWithoutFeedback
+                <TouchableOpacity
+                    style = {this.props.style}
                     onPress = {this.props.onPress}
                     onPressIn = {this.props.onPressIn}
                 >
-                    <View style = {this.props.style}>
-                        {this.renderContentComponent()}
-                    </View>
-                </TouchableWithoutFeedback>
+                    {this.renderContentComponent()}
+                </TouchableOpacity>
             );
         }
     }

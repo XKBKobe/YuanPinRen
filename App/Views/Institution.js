@@ -40,22 +40,23 @@ export default class Institution extends BaseComponent {
 
     async componentWillMount() {
         //检测版本
-        let self = this;
-        let appVersion = await GetBasicInfo.getAppVersion();
-        requestData('/index/other/update_version', 'POST', 'version='+appVersion)
-        .then((data) => {
-            /**
-            Alert.alert("提示", '当前版本无法使用，请下载最新版本！', [
-                {text: 'OK', onPress: () => GetBasicInfo.openAppStore('https://itunes.apple.com/cn/app/%E6%BA%90%E5%93%81%E4%BA%BA/id1239681699?mt=8')},
-            ]);
-             **/
-            if (data.data.version == 2) {
-                //todo
-                //self.setState({isUseful: true, appUrl: data.data.url});
-            }
-        }, (error) => {
 
-        });
+        // let self = this;
+        // let appVersion = await GetBasicInfo.getAppVersion();
+        // requestData('/index/other/update_version', 'POST', 'version='+appVersion)
+        // .then((data) => {
+        //     /**
+        //     Alert.alert("提示", '当前版本无法使用，请下载最新版本！', [
+        //         {text: 'OK', onPress: () => GetBasicInfo.openAppStore('https://itunes.apple.com/cn/app/%E6%BA%90%E5%93%81%E4%BA%BA/id1239681699?mt=8')},
+        //     ]);
+        //      **/
+        //     if (data.data.version == 2) {
+        //         //todo
+        //         //self.setState({isUseful: true, appUrl: data.data.url});
+        //     }
+        // }, (error) => {
+        //
+        // });
         
         requestData('/index/index/index', "POST")
         .then((data) => {
@@ -143,7 +144,7 @@ export default class Institution extends BaseComponent {
         return (
             <Header
                 isLeft = {true}
-                headerTitle = {'研究院'}
+                headerTitle = {'源品人研究院'}
             />
         );
     }

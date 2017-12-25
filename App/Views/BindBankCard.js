@@ -117,39 +117,44 @@ class BindBankCard extends Component {
 
             ]);
         } else if (author == 'true') {
+
+
+            /**
+             ImagePicker.launchImageLibrary(photoOptions, (response) => {
+                if (response.uri) {
+                    let localUrl = "";
+                    if (Platform.OS === 'ios') {
+                        localUrl = response.uri.replace('file://', '');
+                    } else {
+                        localUrl = response.uri;
+                    }
+
+                    if (isPositive == true) {
+                        self.setState({positiveImgUrl: localUrl});
+                    } else {
+                        self.setState({negativeImgUrl: localUrl});
+                    }
+                }
+            });**/
+
+
+
             //从相册中选择单张图片
             ImageCropPicker.openPicker({
                 width: 600,
-                height: 600,
-                cropping: false,
+                height: 700,
+                cropping: true,
                 mediaType: 'photo'
             }).then(image => {
-                console.log('image.path  '+image.path);
+                console.log('image.path  ' + image.path);
                 if (isPositive == true) {
                     self.setState({positiveImgUrl: image.path});
                 } else {
                     self.setState({negativeImgUrl: image.path});
                 }
             })
+
         }
-
-
-        // ImagePicker.launchImageLibrary(photoOptions, (response) => {
-        //     if (response.uri) {
-        //         let localUrl = "";
-        //         if (Platform.OS === 'ios') {
-        //             localUrl = response.uri.replace('file://', '');
-        //         } else {
-        //             localUrl = response.uri;
-        //         }
-        //
-        //         if (isPositive == true) {
-        //             self.setState({positiveImgUrl: localUrl});
-        //         } else {
-        //             self.setState({negativeImgUrl: localUrl});
-        //         }
-        //     }
-        // });
     }
 
     /*
@@ -188,6 +193,9 @@ class BindBankCard extends Component {
         let file2 = {uri: negative, type: 'multipart/form-data', name: 'identity2.png'};
         formData.append("image2", file2);
         let paramter = '/index/Crash/auth_action?' + "idCardNo=" + this.state.idCard + "&bankCardNo=" + this.state.bankCard + "&code=" + this.state.checkedBank + "&openBank=" + openBank;
+
+        console.log('paramter  ' + JSON.stringify(paramter));
+        console.log('formData  ' + JSON.stringify(formData));
         requestData(paramter, "POST", formData)
             .then((data) => {
                 console.log("  \n\n ----------- ", data);
@@ -201,7 +209,7 @@ class BindBankCard extends Component {
                 }
             })
             .catch((error) => {
-                console.log(error);
+                console.log('认证时发生了不可预料的错误  ' + error);
                 Alert.alert("认证时发生了不可预料的错误！");
             });
     }

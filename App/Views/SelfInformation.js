@@ -74,11 +74,40 @@ class SelfInformation extends BaseComponent {
 
             ]);
         }else if (author == 'true'){
+            /**
+            ImagePicker.launchImageLibrary({}, (response) => {
+                if (response.uri) {
+                    let localUrl = "";
+                    if (Platform.OS === 'ios') {
+                        localUrl = response.uri.replace('file://', '');
+                    } else {
+                        localUrl = response.uri;
+                    }
+
+                    let formData = new FormData();
+                    let file = {uri: localUrl, type: 'multipart/form-data', name: 'avatar.png'};
+                    formData.append("avatar", file);
+                    requestData("/index/User/update_data", "POST", formData)
+                        .then((data) => {
+                            if (data.errno == 0) {
+                                this.props.MineActions.getUserInfo("");
+                            } else {
+                                Alert.alert("上传失败: ", data.errmsg);
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            Alert.alert("上传头像时发生了不可预料的错误！");
+                        });
+                }
+            });
+             **/
+
             //从相册中选择单张图片
             ImageCropPicker.openPicker({
-                width: 400,
-                height: 300,
-                cropping: false,
+                width: 600,
+                height: 700,
+                cropping: true,
                 mediaType:'photo'
             }).then(image => {
                 console.log('image.path  '+image.path);
@@ -89,6 +118,7 @@ class SelfInformation extends BaseComponent {
                     .then((data) => {
                         if (data.errno == 0) {
                             this.props.MineActions.getUserInfo("");
+                            Alert.alert("提示",'上传成功');
                         } else {
                             Alert.alert("上传失败: ", data.errmsg);
                         }
@@ -98,46 +128,9 @@ class SelfInformation extends BaseComponent {
                         Alert.alert("上传头像时发生了不可预料的错误！");
                     });
             })
-        }else{ //author 授权
-          // let authority =  await GetBasicInfo.getPhotoAuthorizate();
-          //   console.log('authority authority  '  + authority);
-          // if(authority == 'false'){
-          //
-          //     console.log('authority false')
-          // }
-
         }
 
 
-
-        /**
-        ImagePicker.launchImageLibrary({}, (response) => {
-            if (response.uri) {
-                let localUrl = "";
-                if (Platform.OS === 'ios') {
-                    localUrl = response.uri.replace('file://', '');
-                } else {
-                    localUrl = response.uri;
-                }
-
-                let formData = new FormData();
-                let file = {uri: localUrl, type: 'multipart/form-data', name: 'avatar.png'};
-                formData.append("avatar", file);
-                requestData("/index/User/update_data", "POST", formData)
-                    .then((data) => {
-                        if (data.errno == 0) {
-                            this.props.MineActions.getUserInfo("");
-                        } else {
-                            Alert.alert("上传失败: ", data.errmsg);
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        Alert.alert("上传头像时发生了不可预料的错误！");
-                    });
-            }
-        });
-         **/
     }
 
     pageHasDataRender() {
@@ -226,7 +219,7 @@ class SelfInformation extends BaseComponent {
                     <ButtonBar
                         style={{marginTop: 1}}
                         title={'关于源品'}
-                        introduction={'V1.0.0'}
+                        introduction={'V2.2'}
                         onPress={() => {
                         }}
                     />

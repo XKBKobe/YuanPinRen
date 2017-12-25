@@ -19,6 +19,7 @@ export default async function request(api, method, data = "") {
     let requestStr = RequestBaseURL + api;
     let deviceId = await GetBasicInfo.getDeviceId();
     let JSSIONID = await GetBasicInfo.getNativeCookie();
+    console.log('请求的  URL  ' + RequestBaseURL+api);
     console.log('请求的  JSSIONID  ' + api + '   ' + JSSIONID);
     if(method == 'POST'){
         return new Promise((resolve, reject) => {

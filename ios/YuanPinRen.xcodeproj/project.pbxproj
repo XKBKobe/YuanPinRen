@@ -1025,7 +1025,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 3Y3PF88U2X;
+						DevelopmentTeam = 97S42LL8PA;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -1591,7 +1591,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 3Y3PF88U2X;
+				DEVELOPMENT_TEAM = 97S42LL8PA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/YuanPinRen/alipay",
@@ -1627,7 +1627,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.icrack.yuanpinren;
 				PRODUCT_NAME = YuanPinRen;
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1642,7 +1644,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 3Y3PF88U2X;
+				DEVELOPMENT_TEAM = 97S42LL8PA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/YuanPinRen/alipay",
@@ -1678,7 +1680,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.icrack.yuanpinren;
 				PRODUCT_NAME = YuanPinRen;
+				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
