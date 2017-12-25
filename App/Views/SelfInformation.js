@@ -219,7 +219,7 @@ class SelfInformation extends BaseComponent {
                     <ButtonBar
                         style={{marginTop: 1}}
                         title={'关于源品'}
-                        introduction={'V2.2'}
+                        introduction={'V2.2.0'}
                         onPress={() => {
                         }}
                     />
