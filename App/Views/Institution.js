@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     View,
     Text,
@@ -10,7 +10,7 @@ import {
     TouchableOpacity, Alert
 } from 'react-native';
 import BaseComponent from '../Components/BaseComponent';
-import { Actions, ActionConst } from 'react-native-router-flux';
+import {Actions, ActionConst} from 'react-native-router-flux';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import Header from '../Components/Header';
@@ -57,108 +57,132 @@ export default class Institution extends BaseComponent {
         // }, (error) => {
         //
         // });
-        
+
         requestData('/index/index/index', "POST")
-        .then((data) => {
-            if (0 == data.errno) {
-                this.setState({pageStatus:"HASDATA",homeData:data.data});
-                if (data.data.loginStatus) {
-                    GetBasicInfo.setLoginStatus('true');
+            .then((data) => {
+                if (0 == data.errno) {
+                    this.setState({pageStatus: "HASDATA", homeData: data.data});
+                    if (data.data.loginStatus) {
+                        GetBasicInfo.setLoginStatus('true');
+                    } else {
+                        GetBasicInfo.setLoginStatus('false');
+                    }
+
                 } else {
-                    GetBasicInfo.setLoginStatus('false');
+                    if (data.errno == 100003 || data.errno == 100013) {
+                        this.setState({pageStatus: "NODATA"});
+                        GetBasicInfo.setLoginStatus("false");
+                        Actions.WelcomeLogin({type: ActionConst.RESET});
+                    }
+                    console.log('WelcomeLogin  ' + JSON.stringify(data));
+                    alert(data.errmsg);
+                    this.setState({pageStatus: "NODATA"});
                 }
+            }, (error) => {
 
-            }else {
-                if (data.errno == 100003 || data.errno == 100013) {
-                    this.setState({pageStatus:"NODATA"});
-                    GetBasicInfo.setLoginStatus("false");
-                    Actions.WelcomeLogin({type: ActionConst.RESET});
-                }
-                console.log('WelcomeLogin  '+JSON.stringify(data));
-                alert(data.errmsg);
-                this.setState({pageStatus:"NODATA"});
-            }
-        }, (error) => {
-
-        });
+            });
     }
 
     async bannerJumpHandle2(data) {
         var loginStatus = await GetBasicInfo.getLoginStatus();
-
-        if (loginStatus == 'false') {
-            Actions.WelcomeLogin({type: ActionConst.REPLACE});
-        } else {
-            Actions.GoodsDetail({goodsId: data.type_id});
+        //商品详情
+        if (data.type == 1) {
+            if (loginStatus == 'false') {
+                Actions.WelcomeLogin({type: ActionConst.REPLACE});
+            } else {
+                Actions.GoodsDetail({goodsId: data.type_id});
+            }
+        } else if (data.type == 2) { //指定URL
+            if (!!data.url) {
+                Actions.Webview({url: data.url});
+            }
+        } else { //就一张图片什么
         }
+
     }
 
     renderBannerRow(data, pageID) {
-		let imgURL = data.img.url;
-		return (
+        let imgURL = data.img.url;
+        return (
             <TouchableOpacity onPress={() => this.bannerJumpHandle2(data)}>
-                <Image style={{height: 160, width:Dimensions.get('window').width}} key={pageID} source = {{uri: imgURL}} />
-            {/* <TouchableOpacity onPress={() => Actions.GoodsDetail({goodsId: data.type_id})}>
-                <Image style={{height: 160, width:Dimensions.get('window').width}} key={pageID} source = {{uri: imgURL}} /> */}
+                <Image style={{height: 160, width:Dimensions.get('window').width}} key={pageID} source={{uri: imgURL}}/>
+                {/* <TouchableOpacity onPress={() => Actions.GoodsDetail({goodsId: data.type_id})}>
+                 <Image style={{height: 160, width:Dimensions.get('window').width}} key={pageID} source = {{uri: imgURL}} /> */}
             </TouchableOpacity>
         );
-	}
+    }
 
-    async bannerJumpHandle1(bannerList) {
+    async bannerJumpHandle1(data) {
         var loginStatus = await GetBasicInfo.getLoginStatus();
-
-        if (loginStatus == 'false') {
-            Actions.WelcomeLogin({type: ActionConst.REPLACE});
-        } else {
-            Actions.GoodsDetail({goodsId: bannerList[0].type_id});
+        if (data.type == 1) {
+            if (loginStatus == 'false') {
+                Actions.WelcomeLogin({type: ActionConst.REPLACE});
+            } else {
+                Actions.GoodsDetail({goodsId: bannerList[0].type_id});
+            }
+        } else if (data.type == 2) { //指定URL
+            if (!!data.url) {
+                Actions.Webview({url: data.url});
+            }
+        } else { //就一张图片什么
         }
+
     }
 
     renderBanner() {
-        if(!this.state.homeData) {return;}
+        if (!this.state.homeData) {
+            return;
+        }
         let bannerList = this.state.homeData.slideList;
-        if (!bannerList || bannerList.length < 1) {return;}
+        if (!bannerList || bannerList.length < 1) {
+            return;
+        }
 
         if (bannerList.length == 1) {
             return (
                 <TouchableOpacity
                     onPress={() => this.bannerJumpHandle1(bannerList)}
                 >
-                    <Image style={{height: 160, width:Dimensions.get('window').width}} source = {{uri: bannerList[0].img.url}} />
-                {/* <TouchableOpacity onPress={() => Actions.GoodsDetail({goodsId: bannerList[0].type_id})}>
-                    <Image style={{height: 160, width:Dimensions.get('window').width}} source = {{uri: bannerList[0].img.url}} /> */}
+                    <Image style={{height: 160, width:Dimensions.get('window').width}}
+                           source={{uri: bannerList[0].img.url}}/>
+                    {/* <TouchableOpacity onPress={() => Actions.GoodsDetail({goodsId: bannerList[0].type_id})}>
+                     <Image style={{height: 160, width:Dimensions.get('window').width}} source = {{uri: bannerList[0].img.url}} /> */}
                 </TouchableOpacity>
             )
         }
 
         let bannerSource = new ViewPager.DataSource({
-			pageHasChanged: (p1, p2) => p1 !== p2
-		});
+            pageHasChanged: (p1, p2) => p1 !== p2
+        });
 
-		bannerSource = bannerSource.cloneWithPages(bannerList);
+        bannerSource = bannerSource.cloneWithPages(bannerList);
 
-		return <ViewPager dataSource={bannerSource} renderPage={this.renderBannerRow} autoPlay={true} isLoop={true} />;
+        return <ViewPager dataSource={bannerSource} renderPage={this.renderBannerRow} autoPlay={true} isLoop={true}/>;
     }
 
     headerRender() {
         return (
             <Header
-                isLeft = {true}
-                headerTitle = {'源品人研究院'}
+                isLeft={true}
+                headerTitle={'源品人研究院'}
             />
         );
     }
 
     renderHealthButtons(healthData) {
-        if(!healthData) {return;}
-        return healthData.map(function(item, index) {
+        if (!healthData) {
+            return;
+        }
+        return healthData.map(function (item, index) {
             let imgurl = item.professorImg.url;
             let leftLength = 17;
             //console.log(item);
             //if (index == 0) {leftLength = 8;}
             return (
-                <TouchableOpacity style={{flexDirection:"column",width:102/375*Dimensions.get('window').width,marginLeft:leftLength,justifyContent:"center",alignItems:"center"}} key={index}
-                    onPress = {() => Actions.Psychologist({psyId: item.professId})}
+                <TouchableOpacity
+                    style={{flexDirection:"column",width:102/375*Dimensions.get('window').width,marginLeft:leftLength,justifyContent:"center",alignItems:"center"}}
+                    key={index}
+                    onPress={() => Actions.Psychologist({psyId: item.professId})}
                 >
                     <Image source={{uri: imgurl}} style={{height:72,width:72,borderRadius:36}}/>
                     <Text style={{fontSize:12,color:"#333",marginTop:9}}>{item.professorName}</Text>
@@ -169,12 +193,16 @@ export default class Institution extends BaseComponent {
     }
 
     renderHealth() {
-        if(!this.state.homeData) {return;}
+        if (!this.state.homeData) {
+            return;
+        }
         let professorList = this.state.homeData.professorList;
-        if (!professorList || professorList.length < 1) {return;}
+        if (!professorList || professorList.length < 1) {
+            return;
+        }
         return (
             <View style={{height:185}}>
-                {this.renderTitleBar('健康专家',1)}
+                {this.renderTitleBar('健康专家', 1)}
                 <View style={{flexDirection:"row",flexWrap:"wrap",marginTop:11}}>
                     {this.renderHealthButtons(professorList)}
                 </View>
@@ -183,30 +211,36 @@ export default class Institution extends BaseComponent {
     }
 
     renderOriginItems(originData) {
-        if(!originData) {return;}
-        return originData.map(function(item, index) {
+        if (!originData) {
+            return;
+        }
+        return originData.map(function (item, index) {
             //console.log(item);
             let imgurl = item.img.url;
             let leftLength = 10;
             //if (index == 0) {leftLength = 8;}
             return (
                 <TouchableOpacity style={{flexDirection:"column",width:110,marginLeft:leftLength}} key={index}
-                    onPress = {() => Actions.Webview({url: item.url})}
+                                  onPress={() => Actions.Webview({url: item.url})}
                 >
                     <Image source={{uri: imgurl}} style={{height:88,width:110}}/>
-                    <Text style={{fontSize:12,color:"#333",marginTop:15}} numberOfLines= {1}>{item.brief}</Text>
+                    <Text style={{fontSize:12,color:"#333",marginTop:15}} numberOfLines={1}>{item.brief}</Text>
                 </TouchableOpacity>
             )
         });
     }
 
     renderProductViedo() {
-        if(!this.state.homeData) {return;}
+        if (!this.state.homeData) {
+            return;
+        }
         let productOrigin = this.state.homeData.productOrigin;
-        if (!productOrigin || productOrigin.length < 1) {return;}
+        if (!productOrigin || productOrigin.length < 1) {
+            return;
+        }
         return (
             <View style={{height:189}}>
-                {this.renderTitleBar('产品溯源',2)}
+                {this.renderTitleBar('产品溯源', 2)}
                 <View style={{flexDirection:"row",flexWrap:"wrap",marginTop:8}}>
                     {this.renderOriginItems(productOrigin)}
                 </View>
@@ -215,14 +249,18 @@ export default class Institution extends BaseComponent {
     }
 
     renderScienceItems(scienceData) {
-        if(!scienceData) {return;}
-        return scienceData.map(function(item, index) {
+        if (!scienceData) {
+            return;
+        }
+        return scienceData.map(function (item, index) {
             let imgurl = item.img.url;
             let leftLength = 15;
             //if (index == 0) {leftLength = 8;}
             return (
-                <TouchableOpacity style={{flexDirection:"row",height:130,borderBottomWidth: 1,borderStyle: "solid",borderBottomColor: "#eee",}} key={index}
-                    onPress = {() => Actions.Webview({url: item.url})}
+                <TouchableOpacity
+                    style={{flexDirection:"row",height:130,borderBottomWidth: 1,borderStyle: "solid",borderBottomColor: "#eee",}}
+                    key={index}
+                    onPress={() => Actions.Webview({url: item.url})}
                 >
                     <Image source={{uri: imgurl}} style={{marginLeft:15,height:88,width:110,marginTop:20}}/>
                     <View style={{flexDirection:"column",marginLeft:29,marginTop:20}}>
@@ -235,12 +273,16 @@ export default class Institution extends BaseComponent {
     }
 
     renderSicenc() {
-        if(!this.state.homeData) {return;}
+        if (!this.state.homeData) {
+            return;
+        }
         let scienceCenter = this.state.homeData.scienceCenter;
-        if (!scienceCenter || scienceCenter.length < 1) {return;}
+        if (!scienceCenter || scienceCenter.length < 1) {
+            return;
+        }
         return (
             <View>
-                {this.renderTitleBar('科学中心',3)}
+                {this.renderTitleBar('科学中心', 3)}
                 {this.renderScienceItems(scienceCenter)}
             </View>
         )
@@ -255,7 +297,8 @@ export default class Institution extends BaseComponent {
         return (
             <View>
                 <View style={{backgroundColor:"#eee", height:12}}></View>
-                <View style={{flexDirection: 'row', justifyContent:"space-between",width:345/375*Dimensions.get('window').width,marginLeft:15,marginTop:9}}>
+                <View
+                    style={{flexDirection: 'row', justifyContent:"space-between",width:345/375*Dimensions.get('window').width,marginLeft:15,marginTop:9}}>
                     <Text style={{fontSize:14,color:"#333"}}>{title}</Text>
                     <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {
                         switch(pageId) {
@@ -275,9 +318,9 @@ export default class Institution extends BaseComponent {
                     }}>
                         <Text style={{fontSize:12,color:"#666"}}>更多</Text>
                         <Image
-                            style = {{ height: 12, width: 7,marginLeft:8}}
-                            source = {ImgSrc.IC_RIGHT_ARROW}
-                            resizeMode = {'stretch'}
+                            style={{ height: 12, width: 7,marginLeft:8}}
+                            source={ImgSrc.IC_RIGHT_ARROW}
+                            resizeMode={'stretch'}
                         />
                     </TouchableOpacity>
                 </View>
@@ -286,21 +329,21 @@ export default class Institution extends BaseComponent {
     }
 
     render() {
-        if(!this.state.isUseful) {
+        if (!this.state.isUseful) {
 
             /**
-            let self = this;
-            return <View style={{flex: 1, flexDirection: 'column',alignItems: 'center',
+             let self = this;
+             return <View style={{flex: 1, flexDirection: 'column',alignItems: 'center',
             justifyContent: 'center'}}>
-                <TouchableOpacity onPress={() => GetBasicInfo.openAppStore(self.state.appUrl)}>
-                    <Text>当前版本无法使用，请下载最新版本！</Text>
-                </TouchableOpacity>
-            </View>
-            **/
+             <TouchableOpacity onPress={() => GetBasicInfo.openAppStore(self.state.appUrl)}>
+             <Text>当前版本无法使用，请下载最新版本！</Text>
+             </TouchableOpacity>
+             </View>
+             **/
 
 
         }
-       return (
+        return (
             <View>
                 {this.headerRender()}
                 <ScrollView style={{height:560/667*Dimensions.get('window').height}}>

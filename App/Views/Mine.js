@@ -83,7 +83,8 @@ class Mine extends Component {
                 if (0 == data.errno) {
                     if (data.data) {
                         console.log('我要提现  ' + JSON.stringify(this.props.MineState));
-                        Actions.WithdrawMoney({withdrawMoney: this.props.MineState.canUseMoney})
+                        //Actions.WithdrawMoney({withdrawMoney: this.props.MineState.canUseMoney})
+                        Actions.WaitReview();
                     } else {
                         //跳转实名认证
                         //Actions.UserVerified();

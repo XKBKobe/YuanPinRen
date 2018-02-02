@@ -116,7 +116,7 @@ class SelfInformation extends BaseComponent {
                 formData.append("avatar", file);
                 requestData("/index/User/update_data", "POST", formData)
                     .then((data) => {
-                        if (data.errno == 0) {
+                        if (data['errno'] == 0) {
                             this.props.MineActions.getUserInfo("");
                             Alert.alert("提示",'上传成功');
                         } else {
@@ -127,6 +127,8 @@ class SelfInformation extends BaseComponent {
                         console.log(error);
                         Alert.alert("上传头像时发生了不可预料的错误！");
                     });
+            },err =>{
+                console.log('cancel');
             })
         }
 

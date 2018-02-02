@@ -103,7 +103,7 @@ class BindBankCard extends Component {
         let author = await GetBasicInfo.getPhotoAuthorizate();
         console.log('author   ' + author);
         if (author == 'false') {
-            Alert.alert("提示", '请到设置-隐私开启相册权限', [
+            Alert.alert("提示", '请到设置-隐私-相册中开启此App的权限', [
                 {
                     text: 'cancel', onPress: () => {
                         console.log('cancel')
@@ -152,6 +152,8 @@ class BindBankCard extends Component {
                 } else {
                     self.setState({negativeImgUrl: image.path});
                 }
+            },err =>{
+                console.log('cancel');
             })
 
         }
